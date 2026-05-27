@@ -1,27 +1,29 @@
 export type GeneralLogEntry = {
-  timestamp: string
-  level: 'INFO' | 'WARN' | 'ERROR' | 'DEBUG'
-  message: string
-  source: string
+  id: string
   type: 'application' | 'system' | 'http'
+  createTime: string
+  sourceSystem: string
+  computerName: string
+  level: 'INFO' | 'WARN' | 'ERROR' | 'DEBUG'
+  messages: string
 }
 
 export type ApplicationLogEntry = GeneralLogEntry & {
-  type: 'application'
   applicationName: string
   threadId: string
 }
 
 export type SystemLogEntry = GeneralLogEntry & {
-  type: 'system'
-  systemComponent: string
+  errorCode: string
+  lineInformation: string
 }
 
 export type HttpLogEntry = GeneralLogEntry & {
-  type: 'http'
+  status: number
   method: string
-  url: string
-  statusCode: number
+  path: string
+  requestUrl: string
+  response: string
 }
 
 export type LogEntry = ApplicationLogEntry | SystemLogEntry | HttpLogEntry

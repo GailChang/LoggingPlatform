@@ -1,0 +1,105 @@
+import * as React from 'react';
+import { styled, useTheme } from '@mui/material/styles';
+import Box from '@mui/material/Box';
+import MuiAppBar from '@mui/material/AppBar';
+import IconButton from '@mui/material/IconButton';
+import Toolbar from '@mui/material/Toolbar';
+import Tooltip from '@mui/material/Tooltip';
+import Stack from '@mui/material/Stack';
+import Link from '../NextLink'
+
+const AppBar = styled(MuiAppBar)(({ theme }) => ({
+  borderWidth: 0,
+  borderBottomWidth: 1,
+  borderStyle: 'solid',
+  borderColor: (theme.vars ?? theme).palette.divider,
+  boxShadow: 'none',
+  zIndex: theme.zIndex.drawer + 1,
+}));
+
+const LogoContainer = styled('div')({
+  position: 'relative',
+  height: 40,
+  display: 'flex',
+  alignItems: 'center',
+  '& img': {
+    maxHeight: 40,
+  },
+});
+
+export interface NavbarProps {
+  logo?: React.ReactNode;
+  title?: string;
+  menuOpen: boolean;
+  onToggleMenu: (open: boolean) => void;
+}
+
+export default function Navbar({
+  logo,
+  title,
+  menuOpen,
+  onToggleMenu,
+}: NavbarProps) {
+  const handleMenuOpen = React.useCallback(() => {
+    onToggleMenu(!menuOpen);
+  }, [menuOpen, onToggleMenu]);
+
+  const getMenuIcon = React.useCallback(
+    (isExpanded: boolean) => {
+      const expandMenuActionText = 'Expand';
+      const collapseMenuActionText = 'Collapse';
+
+      return (
+        <Tooltip
+          title={`${isExpanded ? collapseMenuActionText : expandMenuActionText} menu`}
+          enterDelay={1000}
+        >
+          <div>
+            <IconButton
+              size="small"
+              aria-label={`${isExpanded ? collapseMenuActionText : expandMenuActionText} navigation menu`}
+              onClick={handleMenuOpen}
+            >
+               {/* TODO: menu icon */}
+            </IconButton>
+          </div>
+        </Tooltip>
+      );
+    },
+    [handleMenuOpen],
+  );
+
+  return (
+    <AppBar color="inherit" position="absolute" sx={{ displayPrint: 'none' }}>
+      <Toolbar sx={{ backgroundColor: 'inherit', mx: { xs: -0.75, sm: -1 } }}>
+        <Stack
+          direction="row"
+          sx={{
+            justifyContent: 'space-between',
+            alignItems: 'center',
+            flexWrap: 'wrap',
+            width: '100%',
+          }}
+        >
+          <Stack direction="row" sx={{ alignItems: 'center' }}>
+            <Box sx={{ mr: 1 }}>{getMenuIcon(menuOpen)}</Box>
+            <Link href={"#"}>
+                <Stack direction="row" sx={{ alignItems: 'center' }}>
+                {logo ? <LogoContainer>{logo}</LogoContainer> : null}
+                {title}
+              </Stack>
+            </Link>
+          </Stack>
+          <Stack
+            direction="row"
+            spacing={1}
+            sx={{ alignItems: 'center', marginLeft: 'auto' }}
+          >
+            <Stack direction="row" sx={{ alignItems: 'center' }}>
+            </Stack>
+          </Stack>
+        </Stack>
+      </Toolbar>
+    </AppBar>
+  );
+}

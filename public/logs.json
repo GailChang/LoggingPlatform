@@ -1,0 +1,39 @@
+{
+  "logs": [
+    {
+      "createTime": "2026-05-01 21:29:11",
+      "level": "error",
+      "messages": "測試訊息1",
+      "sourceSystem": "服務A",
+      "type": "http"
+    },
+    {
+      "createTime": "2026-05-03 11:29:55",
+      "level": "warning",
+      "messages": "測試訊息2",
+      "sourceSystem": "服務A",
+      "type": "http"
+    },
+    {
+      "createTime": "2026-05-05 12:29:36",
+      "level": "info",
+      "messages": "測試訊息3",
+      "sourceSystem": "服務A",
+      "type": "http"
+    },
+    {
+      "createTime": "2026-05-08 13:29:42",
+      "level": "info",
+      "messages": "測試訊息4",
+      "sourceSystem": "服務A",
+      "type": "http"
+    },
+    {
+      "createTime": "2026-05-13 14:01:58",
+      "level": "warning",
+      "messages": "測試訊息5",
+      "sourceSystem": "服務A",
+      "type": "http"
+    }
+  ]
+}

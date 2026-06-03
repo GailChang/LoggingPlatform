@@ -1,6 +1,7 @@
 'use client'
 
-import ArrowForwardIosRoundedIcon from '@mui/icons-material/ArrowForwardIosRounded'
+import HomeRoundedIcon from '@mui/icons-material/HomeRounded';
+import LineStyleRoundedIcon from '@mui/icons-material/LineStyleRounded';
 import {
   Drawer,
   ListItemIcon,
@@ -45,15 +46,15 @@ const Sidebar: React.FC<TSidebarProps> = ({ isOpen }) => {
       open={isOpen}
     >
       <MenuList>
-        <MenuItem component={Link} href='/' selected={pathname === '/'}>
+        <MenuItem component={Link} href='/' color='black' selected={pathname === '/'}>
           <ListItemIcon>
-            <ArrowForwardIosRoundedIcon />
+            <HomeRoundedIcon />
           </ListItemIcon>
           <ListItemText>Dashboard</ListItemText>
         </MenuItem>
-        <MenuItem component={Link} href='/logs' selected={pathname === '/logs'}>
+        <MenuItem component={Link} href='/logs' color='black' selected={pathname === '/logs'}>
           <ListItemIcon>
-            <ArrowForwardIosRoundedIcon />
+            <LineStyleRoundedIcon />
           </ListItemIcon>
           <ListItemText>Logs</ListItemText>
         </MenuItem>

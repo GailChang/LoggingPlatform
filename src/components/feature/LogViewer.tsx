@@ -9,18 +9,20 @@ import {
   Chip,
   CircularProgress
 } from '@mui/material'
-import { useLogs } from '@/domain/logs/hooks'
+// import { useLogs } from '@/domain/logs/hooks'
 import { useLogsStore } from '@/domain/logs/store'
 
 export function LogViewer() {
   const { logs } = useLogsStore()
-  const { data: remoteLogs, isLoading, error } = useLogs()
-
-  if (isLoading) return <CircularProgress />
-  if (error) return <Box>載入失敗</Box>
+  console.log("logs: ", logs);
+  // const { data: remoteLogs, isLoading, error } = useLogs()
+   
+  // if (isLoading) return <CircularProgress />
+  // if (error) return <Box>載入失敗</Box>
 
   // 優先顯示 store 中的日誌，沒有的話顯示遠端日誌
-  const displayLogs = logs.length > 0 ? logs : (remoteLogs || [])
+  const displayLogs = logs.length > 0 ? logs : []
+  console.log("display logs: ", displayLogs)
 
   return (
     <Table>
@@ -36,7 +38,7 @@ export function LogViewer() {
       <TableBody>
         {displayLogs.map((log, index) => (
           <TableRow key={index}>
-            <TableCell>{new Date(log.createTime).toLocaleString()}</TableCell>
+            <TableCell>{log.createTime.toLocaleString()}</TableCell>
             <TableCell>
               <Chip
                 label={log.level}

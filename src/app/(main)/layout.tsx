@@ -13,7 +13,10 @@ const MainLayout: React.FC<React.PropsWithChildren> = ({ children }) => {
   const pathname = usePathname()
 
   useEffect(() => {
-    const segment = pathname === '/' ? 'home' : pathname.split('/').filter(Boolean).at(-1) ?? 'home'
+    const segment =
+      pathname === '/'
+        ? 'home'
+        : (pathname.split('/').filter(Boolean).at(-1) ?? 'home')
     setShared(segment)
   }, [pathname])
 
@@ -26,13 +29,19 @@ const MainLayout: React.FC<React.PropsWithChildren> = ({ children }) => {
       <Navbar onToggleMenu={handleToggleMenu} />
       <Stack direction='column' sx={{ height: '100dvh' }}>
         <Toolbar />
-        <Stack direction='row' sx={{ flex: 1 }}>
+        <Stack direction='row' sx={{ flex: 1, overflow: 'hidden' }}>
           <Sidebar isOpen={isOpen} />
           {/* TODO: Sidebar Drawer */}
-          <Box component='main' sx={{ flex: 1 }}>
-            <Breadcrumb />
-            {children}
-          </Box>
+          <Stack
+            direction='column'
+            component='main'
+            sx={{ flex: 1, overflow: 'hidden' }}
+          >
+            <Breadcrumb sx={{ flexGrow: 0, flexShrink: 0 }} />
+            <Box sx={{ flexGrow: 1, flexShrink: 1, overflow: 'auto' }}>
+              {children}
+            </Box>
+          </Stack>
         </Stack>
       </Stack>
     </>

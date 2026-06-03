@@ -1,3 +1,5 @@
+'use client'
+
 import { Container, Typography, Box } from '@mui/material'
 import { LogViewer } from '@/components/feature/LogViewer'
 

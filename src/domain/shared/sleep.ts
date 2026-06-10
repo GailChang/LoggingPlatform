@@ -1,16 +1,8 @@
-export const sleep = (ms : number) => {
-  const promise = new Promise((resolve) => setTimeout(resolve, ms))
-  return promise;
-}
+const DEFAULT_SLEEP_TIME = 3000
 
-export const sleepOneSec = async () => {
-  await sleep(1000)
-  return
-}
-
-export const sleepAndGetData = async <T>(ms: number, data: T[]) => {
-  console.log("sleep start")
-  await sleep(ms)
-  console.log("sleep end")
-  return data;
+export const sleep = <T>(ms?: number, data?: T) => {
+  const promise = new Promise<T>(resolve =>
+    setTimeout(() => resolve(data ?? ({} as T)), ms ?? DEFAULT_SLEEP_TIME),
+  )
+  return promise
 }

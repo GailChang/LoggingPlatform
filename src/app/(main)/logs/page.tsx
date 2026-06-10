@@ -1,7 +1,8 @@
 'use client'
 
 import { Container, Typography, Box } from '@mui/material'
-import { LogViewer } from '@/components/feature/LogViewer'
+import LogViewer from '@/components/LogViewer'
+import LogDataLayer from '@/components/LogDataLayer'
 
 export default function LogsPage() {
   return (
@@ -11,7 +12,9 @@ export default function LogsPage() {
           Logs
         </Typography>
         <Box sx={{ mt: 3 }}>
-          <LogViewer />
+          <LogDataLayer>
+            <LogViewer />
+          </LogDataLayer>
         </Box>
       </Box>
     </Container>

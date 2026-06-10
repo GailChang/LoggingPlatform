@@ -1,15 +1,14 @@
 import { create } from 'zustand'
-import { useLogsStore } from '../logs/store'
 
 type SharedStore = {
   location: string
 }
 
 const initialState: SharedStore = {
-  location: 'home'
+  location: 'home',
 }
 
-export const useSharedStore = create<SharedStore>(set => ({
+export const useSharedStore = create<SharedStore>(() => ({
   ...initialState,
 }))
 

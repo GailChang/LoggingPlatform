@@ -1,15 +1,17 @@
 import { create } from 'zustand'
-import { LogEntry, HttpLogEntry } from './schema'
+import type { LogEntry } from './schema'
 
 type LogsStore = {
   logs: LogEntry[]
+  isLoading: boolean
 }
 
 const initialState: LogsStore = {
   logs: [],
+  isLoading: false,
 }
 
-export const useLogsStore = create<LogsStore>(set => ({
+export const useLogsStore = create<LogsStore>(() => ({
   ...initialState,
 }))
 
@@ -25,4 +27,8 @@ export const addLogs = (newLogs: LogEntry[]) => {
 
 export const clearLogs = () => {
   useLogsStore.setState({ logs: [] })
+}
+
+export const updateLoadingState = (isLoading: boolean) => {
+  useLogsStore.setState({ isLoading })
 }

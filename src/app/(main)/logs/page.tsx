@@ -8,7 +8,7 @@ export default function LogsPage() {
     <Container maxWidth='xl'>
       <Box sx={{ py: 3 }}>
         <Typography variant='h4' component='h1' gutterBottom>
-          日誌監控系統
+          Logs
         </Typography>
         <Box sx={{ mt: 3 }}>
           <LogViewer />

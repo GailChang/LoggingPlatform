@@ -1,10 +1,23 @@
+export enum ELogType {
+  Application = 'application',
+  System = 'system',
+  Http = 'http',
+}
+
+export enum ELevel {
+  Info = 'INFO',
+  Warn = 'WARN',
+  Error = 'ERROR',
+  Debug = 'DEBUG'
+}
+
 export type GeneralLogEntry = {
   id: string
-  type: 'application' | 'system' | 'http'
+  type: ELogType
   createTime: string
   sourceSystem: string
   computerName: string
-  level: 'INFO' | 'WARN' | 'ERROR' | 'DEBUG'
+  level: ELevel
   messages: string
 }
 

@@ -7,10 +7,11 @@ type FilterStore = {
 
 const initialState: FilterStore = {
   filterGroup: {
-    keyword: '',
-    level: '',
-    type: '',
-    source: '',
+    keyword: undefined,
+    type: undefined,
+    createTime: undefined,
+    sourceSystem: undefined,
+    level: undefined,
   },
 }
 

@@ -15,6 +15,7 @@ export const useLogsStore = create<LogsStore>(() => ({
   ...initialState,
 }))
 
+// #region actions
 export const setLogs = (newLogs: LogEntry[]) => {
   useLogsStore.setState({ logs: newLogs })
 }
@@ -32,3 +33,4 @@ export const clearLogs = () => {
 export const updateLoadingState = (isLoading: boolean) => {
   useLogsStore.setState({ isLoading })
 }
+// #endregion actions

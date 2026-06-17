@@ -1,41 +1,48 @@
 'use client'
 
-import { useId } from "react";
-import { 
-  Accordion, 
-  AccordionSummary, 
-  AccordionDetails, 
+import {
+  Accordion,
+  AccordionSummary,
+  AccordionDetails,
   AccordionProps,
-  Typography
-} from "@mui/material";
-import { ExpandMoreRounded } from "@mui/icons-material";
+  Typography,
+} from '@mui/material'
+import { ExpandMoreRounded } from '@mui/icons-material'
 
-export default function SearchSection({ children, defaultExpanded, ...props }: AccordionProps) {
-  const id = useId();
+export default function SearchSection({
+  children,
+  defaultExpanded,
+  ...props
+}: AccordionProps) {
   return (
-    <Accordion defaultExpanded = {(defaultExpanded || defaultExpanded == undefined) ? true : false}
+    <Accordion
+      defaultExpanded={
+        defaultExpanded || defaultExpanded == undefined ? true : false
+      }
       {...props}
-      sx = {{
+      sx={{
         border: '1px solid #8f8f8f',
-        borderBottomLeftRadius: '15px',
-        borderBottomRightRadius: '15px',
-        borderTopLeftRadius: '15px',
-        borderTopRightRadius: '15px',
+        '&:last-of-type': {
+          borderBottomLeftRadius: 15,
+          borderBottomRightRadius: 15,
+        },
+        '&:first-of-type': {
+          borderTopLeftRadius: 15,
+          borderTopRightRadius: 15,
+        },
       }}
-    > 
+    >
       <AccordionSummary
         expandIcon={<ExpandMoreRounded />}
-        aria-controls={`${id}-panel1-content`}
-        id={`${id}-panel1-header`}
-        sx = {{
-          flexDirection: 'row-reverse'
+        aria-controls='$panel1-content'
+        id='$panel1-header'
+        sx={{
+          flexDirection: 'row-reverse',
         }}
       >
-        <Typography sx={{ paddingLeft:'.3rem' }}>搜尋條件</Typography>
+        <Typography sx={{ paddingLeft: '.3rem' }}>搜尋條件</Typography>
       </AccordionSummary>
-      <AccordionDetails>
-        { children }
-      </AccordionDetails>
+      <AccordionDetails>{children}</AccordionDetails>
     </Accordion>
-  );
+  )
 }

@@ -3,6 +3,7 @@
 import { Container, Typography, Box } from '@mui/material'
 import LogViewer from '@/components/LogViewer'
 import LogDataLayer from '@/components/LogDataLayer'
+import LogSearchSection from '@/components/LogSearchSection'
 
 export default function LogsPage() {
   return (
@@ -12,6 +13,7 @@ export default function LogsPage() {
           Logs
         </Typography>
         <Box sx={{ mt: 3 }}>
+          <LogSearchSection />
           <LogDataLayer>
             <LogViewer />
           </LogDataLayer>

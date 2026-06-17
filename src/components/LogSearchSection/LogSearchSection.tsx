@@ -9,6 +9,7 @@ import {
   Select
 } from "@mui/material";
 import SearchSection from "../SearchSection";
+import { ELogType, ELevel } from "@/domain/logs/schema";
 import { useFilterStore, updateFilterGroup } from "@/domain/filter/store";
 
 const sourceSystemOption = [
@@ -25,6 +26,15 @@ const sourceSystemOption = [
     label: '服務C'
   }
 ]
+const levelOption = Object.entries(ELevel).map(([key, value]) => ({
+  value,
+  label: key,
+}))
+
+const typeOption = Object.entries(ELogType).map(([key, value]) => ({
+  value,
+  label: key,
+}))
 
 export default function LogSearchSection({defaultExpanded, ...props}: Omit<AccordionProps, 'children'>){
   const { sourceSystem, level, keyword } = useFilterStore(state => state.filterGroup)
@@ -61,7 +71,7 @@ export default function LogSearchSection({defaultExpanded, ...props}: Omit<Accor
                 onChange={(e) => updateFilterGroup({ level: e.target.value as typeof level })}
                 label="分級"
               >
-                {sourceSystemOption.map((option) => (
+                {levelOption.map((option) => (
                   <MenuItem key={option.value} value={option.value}>{option.label}</MenuItem>
                 ))}
               </Select>
@@ -79,7 +89,6 @@ export default function LogSearchSection({defaultExpanded, ...props}: Omit<Accor
           </Grid>
           
         </Grid>
-        
       </Box>
     </SearchSection>
   )

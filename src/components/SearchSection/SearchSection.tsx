@@ -34,8 +34,8 @@ export default function SearchSection({
     >
       <AccordionSummary
         expandIcon={<ExpandMoreRounded />}
-        aria-controls='$panel1-content'
-        id='$panel1-header'
+        aria-controls='panel1-content'
+        id='panel1-header'
         sx={{
           flexDirection: 'row-reverse',
         }}

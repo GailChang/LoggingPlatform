@@ -1,4 +1,4 @@
-import { ELogType, ELevel } from "../logs/schema"
+import { ELevel, ELogType } from '../logs/schema'
 
 export type FilterGroup = {
   keyword: string | undefined

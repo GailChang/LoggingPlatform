@@ -1,7 +1,8 @@
 'use client'
 
-import HomeRoundedIcon from '@mui/icons-material/HomeRounded';
-import LineStyleRoundedIcon from '@mui/icons-material/LineStyleRounded';
+import Link from '@/components/NextLink'
+import HomeRoundedIcon from '@mui/icons-material/HomeRounded'
+import LineStyleRoundedIcon from '@mui/icons-material/LineStyleRounded'
 import {
   Drawer,
   ListItemIcon,
@@ -9,7 +10,6 @@ import {
   MenuItem,
   MenuList,
 } from '@mui/material'
-import Link from '@/components/NextLink'
 import { usePathname } from 'next/navigation'
 
 type TSidebarProps = {
@@ -28,8 +28,8 @@ const Sidebar: React.FC<TSidebarProps> = ({ isOpen }) => {
         width: isOpen ? DRAWER_WIDTH : 0,
         flexShrink: 0,
         height: 'stretch',
-        zIndex: theme => theme.zIndex.appBar - 1,
-        transition: theme =>
+        zIndex: (theme) => theme.zIndex.appBar - 1,
+        transition: (theme) =>
           theme.transitions.create('width', {
             easing: theme.transitions.easing.sharp,
             duration: theme.transitions.duration.enteringScreen,
@@ -46,13 +46,23 @@ const Sidebar: React.FC<TSidebarProps> = ({ isOpen }) => {
       open={isOpen}
     >
       <MenuList>
-        <MenuItem component={Link} href='/' color='black' selected={pathname === '/'}>
+        <MenuItem
+          component={Link}
+          href='/'
+          color='black'
+          selected={pathname === '/'}
+        >
           <ListItemIcon>
             <HomeRoundedIcon />
           </ListItemIcon>
           <ListItemText>Dashboard</ListItemText>
         </MenuItem>
-        <MenuItem component={Link} href='/logs' color='black' selected={pathname === '/logs'}>
+        <MenuItem
+          component={Link}
+          href='/logs'
+          color='black'
+          selected={pathname === '/logs'}
+        >
           <ListItemIcon>
             <LineStyleRoundedIcon />
           </ListItemIcon>

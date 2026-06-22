@@ -1,9 +1,9 @@
 'use client'
 
-import { Container, Typography, Box } from '@mui/material'
-import LogViewer from '@/components/LogViewer'
 import LogDataLayer from '@/components/LogDataLayer'
 import LogSearchSection from '@/components/LogSearchSection'
+import LogViewer from '@/components/LogViewer'
+import { Box, Container, Typography } from '@mui/material'
 
 export default function LogsPage() {
   return (

@@ -1,12 +1,12 @@
 'use client'
 import {
+  Chip,
+  CircularProgress,
   Table,
   TableBody,
   TableCell,
   TableHead,
   TableRow,
-  Chip,
-  CircularProgress,
   Typography,
 } from '@mui/material'
 // import { useLogs } from '@/domain/logs/hooks'
@@ -14,11 +14,11 @@ import { useLogsStore } from '@/domain/logs/store'
 import { useMemo } from 'react'
 
 export default function LogViewer() {
-  const logs = useLogsStore(state => state.logs)
-  const isLoading = useLogsStore(state => state.isLoading)
+  const logs = useLogsStore((state) => state.logs)
+  const isLoading = useLogsStore((state) => state.isLoading)
 
   const displayLogs = useMemo(() => {
-    return logs.map(log => ({
+    return logs.map((log) => ({
       ...log,
       createTime: new Date(log.createTime),
     }))

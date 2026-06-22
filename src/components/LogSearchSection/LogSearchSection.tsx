@@ -1,27 +1,27 @@
+import { ELevel, ELogType } from '@/domain/logs/schema'
+import HourglassBottomRoundedIcon from '@mui/icons-material/HourglassBottomRounded'
+import RestartAltRoundedIcon from '@mui/icons-material/RestartAltRounded'
+import SaveRoundedIcon from '@mui/icons-material/SaveRounded'
+import SearchRoundedIcon from '@mui/icons-material/SearchRounded'
 import {
   AccordionProps,
   Box,
-  Grid,
-  TextField,
-  MenuItem,
-  FormControl,
-  InputLabel,
-  Select,
   Button,
+  FormControl,
   FormLabel,
-  Stack
+  Grid,
+  InputLabel,
+  MenuItem,
+  Select,
+  Stack,
+  TextField,
 } from '@mui/material'
-import SearchSection from '../SearchSection'
-import { ELogType, ELevel } from '@/domain/logs/schema'
+import { LocalizationProvider } from '@mui/x-date-pickers'
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
+import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker'
+import 'dayjs/locale/zh-tw'
 import { useRef } from 'react'
-import { LocalizationProvider } from '@mui/x-date-pickers';
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
-import 'dayjs/locale/zh-tw';
-import SearchRoundedIcon from '@mui/icons-material/SearchRounded';
-import SaveRoundedIcon from '@mui/icons-material/SaveRounded';
-import RestartAltRoundedIcon from '@mui/icons-material/RestartAltRounded';
-import HourglassBottomRoundedIcon from '@mui/icons-material/HourglassBottomRounded';
+import SearchSection from '../SearchSection'
 
 //#region 常數
 const SOURCE_SYSTEM_OPTION = [
@@ -130,7 +130,7 @@ export default function LogSearchSection({
                 label='所屬服務'
                 name='sourceSystem'
               >
-                {SOURCE_SYSTEM_OPTION.map(option => (
+                {SOURCE_SYSTEM_OPTION.map((option) => (
                   <MenuItem key={option.value} value={option.value}>
                     {option.label}
                   </MenuItem>
@@ -148,7 +148,7 @@ export default function LogSearchSection({
                 label='分級'
                 name='level'
               >
-                {LEVEL_OPTION.map(option => (
+                {LEVEL_OPTION.map((option) => (
                   <MenuItem key={option.value} value={option.value}>
                     {option.label}
                   </MenuItem>
@@ -166,7 +166,7 @@ export default function LogSearchSection({
                 label='Log 類型'
                 name='type'
               >
-                {TYPE_OPTION.map(option => (
+                {TYPE_OPTION.map((option) => (
                   <MenuItem key={option.value} value={option.value}>
                     {option.label}
                   </MenuItem>
@@ -184,7 +184,7 @@ export default function LogSearchSection({
                 label='http 狀態碼'
                 name='status'
               >
-                {STATUS_OPTION.map(option => (
+                {STATUS_OPTION.map((option) => (
                   <MenuItem key={option.value} value={option.value}>
                     {option.label}
                   </MenuItem>
@@ -196,18 +196,17 @@ export default function LogSearchSection({
             <FormControl fullWidth sx={{ m: 1 }}>
               <FormLabel>查詢期間</FormLabel>
               <Stack direction='row' spacing={2} sx={{ alignItems: 'center' }}>
-                <Select
-                  defaultValue=''
-                  name='stringTime'
-                  sx={{ flex: 1 }}
-                >
-                  {TIME_OPTION.map(option => (
+                <Select defaultValue='' name='stringTime' sx={{ flex: 1 }}>
+                  {TIME_OPTION.map((option) => (
                     <MenuItem key={option.label} value={option.value}>
                       {option.label}
                     </MenuItem>
                   ))}
                 </Select>
-                <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale='zh-tw'>
+                <LocalizationProvider
+                  dateAdapter={AdapterDayjs}
+                  adapterLocale='zh-tw'
+                >
                   <DateTimePicker
                     label='起始時間'
                     name='startTime'
@@ -234,17 +233,32 @@ export default function LogSearchSection({
             </FormControl>
           </Grid>
           <Grid size={12}>
-            <Stack direction='row-reverse' spacing={2} sx={{ alignItems: 'center'}}>
-              <Button type='submit' variant="contained" startIcon={<SearchRoundedIcon />}>
+            <Stack
+              direction='row-reverse'
+              spacing={2}
+              sx={{ alignItems: 'center' }}
+            >
+              <Button
+                type='submit'
+                variant='contained'
+                startIcon={<SearchRoundedIcon />}
+              >
                 查詢
               </Button>
-              <Button variant="outlined" startIcon={<RestartAltRoundedIcon />} color='secondary'>
+              <Button
+                variant='outlined'
+                startIcon={<RestartAltRoundedIcon />}
+                color='secondary'
+              >
                 重設
               </Button>
-              <Button variant="outlined" startIcon={<HourglassBottomRoundedIcon />}>
+              <Button
+                variant='outlined'
+                startIcon={<HourglassBottomRoundedIcon />}
+              >
                 讀取上次條件
               </Button>
-              <Button variant="outlined" startIcon={<SaveRoundedIcon />}>
+              <Button variant='outlined' startIcon={<SaveRoundedIcon />}>
                 儲存條件
               </Button>
             </Stack>

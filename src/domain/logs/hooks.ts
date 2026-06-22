@@ -4,7 +4,7 @@ import type { LogEntry } from './schema'
 
 export function useLogs(
   onSuccess?: (data: LogEntry[]) => void,
-  onError?: (error: unknown) => void,
+  onError?: (error: unknown) => void
 ) {
   return useSWR<LogEntry[]>('logs', logApi.getLogs, {
     refreshInterval: 30000, // 30 秒自動更新

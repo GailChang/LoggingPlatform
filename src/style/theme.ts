@@ -12,9 +12,9 @@ const theme = createTheme({
       light: grey[700],
       main: grey[700],
       dark: grey[100],
-      contrastText: grey[50]
-    }
-  }
+      contrastText: grey[50],
+    },
+  },
 })
 
 export default theme

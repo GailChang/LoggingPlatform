@@ -1,12 +1,12 @@
-import Typography from '@mui/material/Typography'
 import Breadcrumbs, {
   type BreadcrumbsOwnerState,
 } from '@mui/material/Breadcrumbs'
-import NextLink from '../NextLink'
+import Typography from '@mui/material/Typography'
 import { useSharedStore } from '../../domain/shared/store'
+import NextLink from '../NextLink'
 
-const Breadcrumb: React.FC<Partial<BreadcrumbsOwnerState>> = props => {
-  const location = useSharedStore(state => state.location)
+const Breadcrumb: React.FC<Partial<BreadcrumbsOwnerState>> = (props) => {
+  const location = useSharedStore((state) => state.location)
 
   return (
     <Breadcrumbs

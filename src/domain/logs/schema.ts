@@ -8,7 +8,7 @@ export enum ELevel {
   Info = 'INFO',
   Warn = 'WARN',
   Error = 'ERROR',
-  Debug = 'DEBUG'
+  Debug = 'DEBUG',
 }
 
 export type GeneralLogEntry = {

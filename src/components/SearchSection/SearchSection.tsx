@@ -1,13 +1,13 @@
 'use client'
 
+import { ExpandMoreRounded } from '@mui/icons-material'
 import {
   Accordion,
-  AccordionSummary,
   AccordionDetails,
   AccordionProps,
+  AccordionSummary,
   Typography,
 } from '@mui/material'
-import { ExpandMoreRounded } from '@mui/icons-material'
 
 export default function SearchSection({
   children,

@@ -1,12 +1,12 @@
 'use client'
 
+import Breadcrumb from '@/components/Breadcrumb'
 import Navbar from '@/components/Navbar'
 import Sidebar from '@/components/Sidebar'
-import Breadcrumb from '@/components/Breadcrumb'
-import { Box, Stack, Toolbar } from '@mui/material'
-import { useState, useEffect } from 'react'
-import { usePathname } from 'next/navigation'
 import { setShared } from '@/domain/shared/store'
+import { Box, Stack, Toolbar } from '@mui/material'
+import { usePathname } from 'next/navigation'
+import { useEffect, useState } from 'react'
 
 const MainLayout: React.FC<React.PropsWithChildren> = ({ children }) => {
   const [isOpen, setIsOpen] = useState(true)
@@ -21,7 +21,7 @@ const MainLayout: React.FC<React.PropsWithChildren> = ({ children }) => {
   }, [pathname])
 
   const handleToggleMenu = () => {
-    setIsOpen(prev => !prev)
+    setIsOpen((prev) => !prev)
   }
 
   return (

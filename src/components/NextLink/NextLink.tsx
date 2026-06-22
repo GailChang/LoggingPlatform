@@ -8,8 +8,13 @@ type NextLinkProps = LinkProps & {
   children: React.ReactNode
 }
 
-export default function NextLink({ style, color, children, ...props }: NextLinkProps) {
-  const colorApply = color ? color : "white"
+export default function NextLink({
+  style,
+  color,
+  children,
+  ...props
+}: NextLinkProps) {
+  const colorApply = color ? color : 'white'
 
   return (
     <Link

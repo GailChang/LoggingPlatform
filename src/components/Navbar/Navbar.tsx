@@ -1,10 +1,10 @@
+import NLink from '@/components/NextLink'
 import MenuRoundedIcon from '@mui/icons-material/MenuRounded'
+import { Typography } from '@mui/material'
 import AppBar from '@mui/material/AppBar'
 import IconButton from '@mui/material/IconButton'
-import NLink from '@/components/NextLink'
-import Toolbar from '@mui/material/Toolbar'
 import Stack from '@mui/material/Stack'
-import { Typography } from '@mui/material'
+import Toolbar from '@mui/material/Toolbar'
 
 type TNavbarProps = {
   onToggleMenu: () => void

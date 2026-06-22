@@ -1,0 +1,5 @@
+.prettierrc
+*.md
+*.config.*
+package.json
+settings.json

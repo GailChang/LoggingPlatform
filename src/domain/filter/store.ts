@@ -24,7 +24,7 @@ export const setFilterGroup = (newFilterGroup: FilterGroup) => {
 }
 
 export const updateFilterGroup = (updatedFields: Partial<FilterGroup>) => {
-  useFilterStore.setState(prev => ({
+  useFilterStore.setState((prev) => ({
     filterGroup: { ...prev.filterGroup, ...updatedFields },
   }))
 }

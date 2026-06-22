@@ -21,7 +21,7 @@ export const setLogs = (newLogs: LogEntry[]) => {
 }
 
 export const addLogs = (newLogs: LogEntry[]) => {
-  useLogsStore.setState(prev => ({
+  useLogsStore.setState((prev) => ({
     logs: [...prev.logs, ...newLogs],
   }))
 }

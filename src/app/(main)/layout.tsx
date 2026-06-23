@@ -33,8 +33,8 @@ const MainLayout: React.FC<React.PropsWithChildren> = ({ children }) => {
           <Sidebar isOpen={isOpen} />
           {/* TODO: Sidebar Drawer */}
           <Stack
-            direction='column'
             component='main'
+            direction='column'
             sx={{ flex: 1, overflow: 'hidden' }}
           >
             <Breadcrumb sx={{ flexGrow: 0, flexShrink: 0 }} />

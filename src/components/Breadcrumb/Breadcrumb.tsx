@@ -14,7 +14,7 @@ const Breadcrumb: React.FC<Partial<BreadcrumbsOwnerState>> = (props) => {
       {...props}
       sx={{ ml: '.5rem', p: '.5rem', ...props.sx }}
     >
-      <NextLink color='inherit' href='/'>
+      <NextLink href='/' color='inherit'>
         Home
       </NextLink>
       {location !== 'home' && (

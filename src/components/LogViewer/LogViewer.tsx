@@ -38,13 +38,13 @@ export default function LogViewer() {
       <TableBody>
         {isLoading ? (
           <TableRow>
-            <TableCell colSpan={5} align='center' sx={{ p: 2, height: '60vh' }}>
+            <TableCell align='center' colSpan={5} sx={{ p: 2, height: '60vh' }}>
               <CircularProgress />
             </TableCell>
           </TableRow>
         ) : displayLogs.length == 0 ? (
           <TableRow>
-            <TableCell colSpan={5} align='center' sx={{ p: 2, height: '60vh' }}>
+            <TableCell align='center' colSpan={5} sx={{ p: 2, height: '60vh' }}>
               <Typography variant='h3'>No Data</Typography>
             </TableCell>
           </TableRow>
@@ -65,7 +65,7 @@ export default function LogViewer() {
                 />
               </TableCell>
               <TableCell>
-                <Chip label={log.type} variant='outlined' />
+                <Chip variant='outlined' label={log.type} />
               </TableCell>
               <TableCell>{log.messages}</TableCell>
               <TableCell>{log.sourceSystem}</TableCell>

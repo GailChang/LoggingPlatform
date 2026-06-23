@@ -24,6 +24,8 @@ const Sidebar: React.FC<TSidebarProps> = ({ isOpen }) => {
   return (
     <Drawer
       variant='persistent'
+      anchor='left'
+      open={isOpen}
       sx={{
         width: isOpen ? DRAWER_WIDTH : 0,
         flexShrink: 0,
@@ -42,8 +44,6 @@ const Sidebar: React.FC<TSidebarProps> = ({ isOpen }) => {
           boxSizing: 'border-box',
         },
       }}
-      anchor='left'
-      open={isOpen}
     >
       <MenuList>
         <MenuItem

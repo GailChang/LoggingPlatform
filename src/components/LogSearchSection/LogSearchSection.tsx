@@ -124,11 +124,11 @@ export default function LogSearchSection({
             <FormControl fullWidth sx={{ m: 1 }}>
               <InputLabel id='select-source-system-label'>所屬服務</InputLabel>
               <Select
-                labelId='select-source-system-label'
                 id='select-source-system'
-                defaultValue=''
-                label='所屬服務'
                 name='sourceSystem'
+                label='所屬服務'
+                labelId='select-source-system-label'
+                defaultValue=''
               >
                 {SOURCE_SYSTEM_OPTION.map((option) => (
                   <MenuItem key={option.value} value={option.value}>
@@ -142,11 +142,11 @@ export default function LogSearchSection({
             <FormControl fullWidth sx={{ m: 1 }}>
               <InputLabel id='select-level-label'>分級</InputLabel>
               <Select
-                labelId='select-level-label'
                 id='select-level'
-                defaultValue=''
-                label='分級'
                 name='level'
+                label='分級'
+                labelId='select-level-label'
+                defaultValue=''
               >
                 {LEVEL_OPTION.map((option) => (
                   <MenuItem key={option.value} value={option.value}>
@@ -160,11 +160,11 @@ export default function LogSearchSection({
             <FormControl fullWidth sx={{ m: 1 }}>
               <InputLabel id='select-log-type-label'>Log 類型</InputLabel>
               <Select
-                labelId='select-log-type-label'
                 id='select-log-type'
-                defaultValue=''
-                label='Log 類型'
                 name='type'
+                label='Log 類型'
+                labelId='select-log-type-label'
+                defaultValue=''
               >
                 {TYPE_OPTION.map((option) => (
                   <MenuItem key={option.value} value={option.value}>
@@ -178,11 +178,11 @@ export default function LogSearchSection({
             <FormControl fullWidth sx={{ m: 1 }}>
               <InputLabel id='select-status-label'>http 狀態碼</InputLabel>
               <Select
-                labelId='select-status-label'
                 id='select-status'
-                defaultValue=''
-                label='http 狀態碼'
                 name='status'
+                label='http 狀態碼'
+                labelId='select-status-label'
+                defaultValue=''
               >
                 {STATUS_OPTION.map((option) => (
                   <MenuItem key={option.value} value={option.value}>
@@ -196,7 +196,7 @@ export default function LogSearchSection({
             <FormControl fullWidth sx={{ m: 1 }}>
               <FormLabel>查詢期間</FormLabel>
               <Stack direction='row' spacing={2} sx={{ alignItems: 'center' }}>
-                <Select defaultValue='' name='stringTime' sx={{ flex: 1 }}>
+                <Select name='stringTime' defaultValue='' sx={{ flex: 1 }}>
                   {TIME_OPTION.map((option) => (
                     <MenuItem key={option.label} value={option.value}>
                       {option.label}
@@ -204,17 +204,17 @@ export default function LogSearchSection({
                   ))}
                 </Select>
                 <LocalizationProvider
-                  dateAdapter={AdapterDayjs}
                   adapterLocale='zh-tw'
+                  dateAdapter={AdapterDayjs}
                 >
                   <DateTimePicker
-                    label='起始時間'
                     name='startTime'
+                    label='起始時間'
                     slotProps={{ textField: { sx: { flex: 1 } } }}
                   />
                   <DateTimePicker
-                    label='結束時間'
                     name='endTime'
+                    label='結束時間'
                     slotProps={{ textField: { sx: { flex: 1 } } }}
                   />
                 </LocalizationProvider>
@@ -226,8 +226,8 @@ export default function LogSearchSection({
               <FormLabel>文字搜尋</FormLabel>
               <TextField
                 id='input-keyword'
-                defaultValue=''
                 name='keyword'
+                defaultValue=''
                 placeholder='請輸入想搜尋的文字'
               />
             </FormControl>
@@ -239,16 +239,16 @@ export default function LogSearchSection({
               sx={{ alignItems: 'center' }}
             >
               <Button
-                type='submit'
                 variant='contained'
+                type='submit'
                 startIcon={<SearchRoundedIcon />}
               >
                 查詢
               </Button>
               <Button
                 variant='outlined'
-                startIcon={<RestartAltRoundedIcon />}
                 color='secondary'
+                startIcon={<RestartAltRoundedIcon />}
               >
                 重設
               </Button>

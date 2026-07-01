@@ -1,3 +1,4 @@
+import { FilterGroup } from '@/domain/filter/schema'
 import { ELevel, ELogType } from '@/domain/logs/schema'
 import HourglassBottomRoundedIcon from '@mui/icons-material/HourglassBottomRounded'
 import RestartAltRoundedIcon from '@mui/icons-material/RestartAltRounded'
@@ -101,6 +102,7 @@ const STATUS_OPTION = [
   },
 ] as const
 
+const LOG_FILTER_KEY = 'log_filters'
 //#endregion 常數
 
 export default function LogSearchSection({
@@ -108,7 +110,13 @@ export default function LogSearchSection({
   ...props
 }: Omit<AccordionProps, 'children'>) {
   const formRef = useRef<HTMLFormElement>(null)
+  const [resetKey, setResetKey] = useState(0)
 
+  const sourceSystemRef = useRef<any>(null)
+  const levelRef = useRef<any>(null)
+  const typeRef = useRef<any>(null)
+  const statusRef = useRef<any>(null)
+  const keywordRef = useRef<HTMLInputElement>(null)
   // 管理時間欄位的狀態
   const [stringTime, setStringTime] = useState<string>('')
   const [startTime, setStartTime] = useState<Dayjs | null>(null)
@@ -194,28 +202,89 @@ export default function LogSearchSection({
   //#endregion 時間欄位連動事件
 
   //#region 按鈕事件
-  const handleSubmit = (e: React.FormEvent) => {
+  /**
+   * 表單提交事件
+   *
+   * @param e Submit event
+   * @returns
+   */
+  const handleSubmit = (e: React.SubmitEvent) => {
     e.preventDefault()
     if (!formRef.current) return
 
     const formData = new FormData(formRef.current)
     const data = Object.fromEntries(formData.entries())
-    console.log('submit data: ', data)
+    const { stringTime, ...restData } = data
+    // console.log('submit data: ', restData)
+  }
+
+  /** 表單清空欄位事件 */
+  const handleReset = () => {
+    setResetKey((prev) => prev + 1)
+    setStringTime('')
+    setStartTime(null)
+    setEndTime(null)
+  }
+
+  const handleSaveFilters = () => {
+    if (!formRef.current) return
+    const formData = new FormData(formRef.current)
+    const filters: FilterGroup = {
+      keyword: (formData.get('keyword') as string) || '',
+      type: (formData.get('type') as ELogType) || undefined,
+      status: (formData.get('status') as string) || '',
+      startTime: (formData.get('startTime') as string) || '',
+      endTime: (formData.get('endTime') as string) || '',
+      sourceSystem: (formData.get('sourceSystem') as string) || '',
+      level: (formData.get('level') as ELevel) || '',
+    }
+
+    console.log('filters', filters)
+    localStorage.setItem(LOG_FILTER_KEY, JSON.stringify(filters))
   }
 
   //TODO: 待實作
-  const handleReset = () => {}
+  const handleLoadFilters = () => {
+    const saved = localStorage.getItem(LOG_FILTER_KEY)
+    if (!saved || !formRef.current) return
 
-  //TODO: 待實作
-  const handleSaveFilters = () => {}
+    const filters = JSON.parse(saved)
+    console.log('filters', filters)
 
-  //TODO: 待實作
-  const handleLoadFilters = () => {}
+    console.log('sourceSystemRef.current', sourceSystemRef.current)
+    if (sourceSystemRef.current && filters.sourceSystem) {
+      sourceSystemRef.current.value = filters.sourceSystem
+    }
+    if (levelRef.current && filters.level) {
+      levelRef.current.value = filters.level
+    }
+    if (typeRef.current && filters.type) {
+      typeRef.current.value = filters.type
+    }
+    if (statusRef.current && filters.status) {
+      statusRef.current.value = filters.status
+    }
+
+    // TextField
+    if (keywordRef.current && filters.keyword) {
+      keywordRef.current.value = filters.keyword
+    }
+
+    // DateTimePicker
+    setStringTime(filters.stringTime || '')
+    setStartTime(filters.startTime ? dayjs(filters.startTime) : null)
+    setEndTime(filters.endTime ? dayjs(filters.endTime) : null)
+  }
   //#endregion 按鈕事件
 
   return (
     <SearchSection defaultExpanded={defaultExpanded} {...props}>
-      <Box component='form' ref={formRef} onSubmit={handleSubmit}>
+      <Box
+        component='form'
+        ref={formRef}
+        key={resetKey}
+        onSubmit={handleSubmit}
+      >
         <Grid container spacing={2}>
           <Grid size={3}>
             <FormControl fullWidth sx={{ m: 1 }}>
@@ -226,6 +295,7 @@ export default function LogSearchSection({
                 label='所屬服務'
                 labelId='select-source-system-label'
                 defaultValue=''
+                inputRef={sourceSystemRef}
               >
                 {SOURCE_SYSTEM_OPTION.map((option) => (
                   <MenuItem key={option.value} value={option.value}>
@@ -244,6 +314,7 @@ export default function LogSearchSection({
                 label='分級'
                 labelId='select-level-label'
                 defaultValue=''
+                inputRef={levelRef}
               >
                 {LEVEL_OPTION.map((option) => (
                   <MenuItem key={option.value} value={option.value}>
@@ -262,6 +333,7 @@ export default function LogSearchSection({
                 label='Log 類型'
                 labelId='select-log-type-label'
                 defaultValue=''
+                inputRef={typeRef}
               >
                 {TYPE_OPTION.map((option) => (
                   <MenuItem key={option.value} value={option.value}>
@@ -280,6 +352,7 @@ export default function LogSearchSection({
                 label='http 狀態碼'
                 labelId='select-status-label'
                 defaultValue=''
+                inputRef={statusRef}
               >
                 {STATUS_OPTION.map((option) => (
                   <MenuItem key={option.value} value={option.value}>
@@ -339,6 +412,7 @@ export default function LogSearchSection({
                 name='keyword'
                 placeholder='請輸入想搜尋的文字'
                 defaultValue=''
+                inputRef={keywordRef}
               />
             </FormControl>
           </Grid>

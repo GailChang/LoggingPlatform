@@ -131,12 +131,11 @@ export default function LogSearchSection({
     const formData = new FormData(formRef.current)
     const data = Object.fromEntries(formData.entries())
     updateFilterGroup(data as Partial<FilterGroup>)
-    console.log('submit data: ', data)
+    // console.log('submit data: ', data)
   }
 
   /** 表單清空欄位事件 */
   const handleReset = () => {
-    console.log('reset')
     setFieldsDefault({})
     setResetKey((prev) => prev + 1)
   }
@@ -147,7 +146,7 @@ export default function LogSearchSection({
     const formData = new FormData(formRef.current)
     const data = Object.fromEntries(formData.entries())
 
-    console.log('data', data)
+    // console.log('data', data)
     localStorage.setItem(LOG_FILTER_KEY, JSON.stringify(data))
   }
 
@@ -157,7 +156,7 @@ export default function LogSearchSection({
     if (!saved || !formRef.current) return
 
     const filters = JSON.parse(saved) as FilterGroup
-    console.log('filters', filters)
+    // console.log('filters', filters)
 
     if (!filters) return
 

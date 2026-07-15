@@ -5,6 +5,7 @@ import { LogEntry } from './schema'
 export const logApi = {
   async getLogs(filters: FilterGroup): Promise<LogEntry[]> {
     const { data } = await httpClient.post('/logs/', filters)
+    console.log('getlogs activate')
     return data
   },
 

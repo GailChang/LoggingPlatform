@@ -1,4 +1,5 @@
-import { FilterGroup } from '@/domain/filter/schema'
+import { ETimeFilterBy, FilterGroup } from '@/domain/filter/schema'
+import { updateFilterGroup } from '@/domain/filter/store'
 import { ELevel, ELogType } from '@/domain/logs/schema'
 import HourglassBottomRoundedIcon from '@mui/icons-material/HourglassBottomRounded'
 import RestartAltRoundedIcon from '@mui/icons-material/RestartAltRounded'
@@ -8,20 +9,22 @@ import {
   AccordionProps,
   Box,
   Button,
+  Divider,
   FormControl,
   FormLabel,
   Grid,
   InputLabel,
   MenuItem,
+  Radio,
+  RadioGroup,
   Select,
-  SelectChangeEvent,
   Stack,
   TextField,
 } from '@mui/material'
 import { LocalizationProvider } from '@mui/x-date-pickers'
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
 import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker'
-import dayjs, { Dayjs, ManipulateType } from 'dayjs'
+import dayjs from 'dayjs'
 import 'dayjs/locale/zh-tw'
 import { useRef, useState } from 'react'
 import SearchSection from '../SearchSection'
@@ -112,94 +115,7 @@ export default function LogSearchSection({
   const formRef = useRef<HTMLFormElement>(null)
   const [resetKey, setResetKey] = useState(0)
 
-  const sourceSystemRef = useRef<any>(null)
-  const levelRef = useRef<any>(null)
-  const typeRef = useRef<any>(null)
-  const statusRef = useRef<any>(null)
-  const keywordRef = useRef<HTMLInputElement>(null)
-  // 管理時間欄位的狀態
-  const [stringTime, setStringTime] = useState<string>('')
-  const [startTime, setStartTime] = useState<Dayjs | null>(null)
-  const [endTime, setEndTime] = useState<Dayjs | null>(null)
-
-  //#region 時間欄位連動事件
-  /**
-   * 當「查詢期間」改變時，計算並套用起始與結束時間
-   *
-   * @param e 變動事件
-   * @returns
-   */
-  const handleStringTimeChange = (e: SelectChangeEvent<string>) => {
-    const value = e.target.value
-    setStringTime(value)
-
-    if (!value) {
-      clearAllDateTime()
-      return
-    }
-
-    const selectedOption = TIME_OPTION.find((opt) => opt.value === value)
-    if (selectedOption) {
-      const now = dayjs()
-
-      let diffNumber = 0
-      let diffUnit: ManipulateType = 'minute'
-      if (selectedOption.value === 'fiveMinutes') {
-        diffNumber = 5
-      } else if (selectedOption.value == 'tenMinutes') {
-        diffNumber = 10
-      }
-
-      if (selectedOption.value == 'oneHour') {
-        diffNumber = 1
-        diffUnit = 'hour'
-      } else if (selectedOption.value == 'twentyfourHours') {
-        diffNumber = 24
-        diffUnit = 'hour'
-      }
-
-      if (selectedOption.value == 'threeDays') {
-        diffNumber = 3
-        diffUnit = 'day'
-      }
-
-      // 如果未選取有效的值
-      if (diffNumber == 0 && diffUnit == 'minute') {
-        clearAllDateTime()
-        return
-      }
-
-      const start = now.subtract(diffNumber, diffUnit)
-
-      setEndTime(now)
-      setStartTime(start)
-    }
-  }
-
-  /** 清空查詢的起始時間、結束時間 */
-  const clearAllDateTime = () => {
-    setEndTime(null)
-    setStartTime(null)
-  }
-
-  /**
-   * 當「起始時間」或「結束時間」被手動改變時，清空「查詢期間」
-   *
-   * @param type 起始/結束
-   * @returns
-   */
-  const handleDateTimeChange =
-    (type: 'start' | 'end') => (value: Dayjs | null) => {
-      if (type === 'start') {
-        setStartTime(value)
-      } else {
-        setEndTime(value)
-      }
-      // 使用者手動調整後，將查詢期間下拉選項清空
-      setStringTime('')
-    }
-
-  //#endregion 時間欄位連動事件
+  const [fieldsDefault, setFieldsDefault] = useState<Partial<FilterGroup>>()
 
   //#region 按鈕事件
   /**
@@ -214,66 +130,44 @@ export default function LogSearchSection({
 
     const formData = new FormData(formRef.current)
     const data = Object.fromEntries(formData.entries())
-    const { stringTime, ...restData } = data
-    // console.log('submit data: ', restData)
+    updateFilterGroup(data as Partial<FilterGroup>)
+    console.log('submit data: ', data)
   }
 
   /** 表單清空欄位事件 */
   const handleReset = () => {
+    console.log('reset')
+    setFieldsDefault({})
     setResetKey((prev) => prev + 1)
-    setStringTime('')
-    setStartTime(null)
-    setEndTime(null)
   }
 
+  /** 儲存搜尋條件 */
   const handleSaveFilters = () => {
     if (!formRef.current) return
     const formData = new FormData(formRef.current)
-    const filters: FilterGroup = {
-      keyword: (formData.get('keyword') as string) || '',
-      type: (formData.get('type') as ELogType) || undefined,
-      status: (formData.get('status') as string) || '',
-      startTime: (formData.get('startTime') as string) || '',
-      endTime: (formData.get('endTime') as string) || '',
-      sourceSystem: (formData.get('sourceSystem') as string) || '',
-      level: (formData.get('level') as ELevel) || '',
-    }
+    const data = Object.fromEntries(formData.entries())
 
-    console.log('filters', filters)
-    localStorage.setItem(LOG_FILTER_KEY, JSON.stringify(filters))
+    console.log('data', data)
+    localStorage.setItem(LOG_FILTER_KEY, JSON.stringify(data))
   }
 
-  //TODO: 待實作
+  /** 讀取上次搜尋條件 */
   const handleLoadFilters = () => {
     const saved = localStorage.getItem(LOG_FILTER_KEY)
     if (!saved || !formRef.current) return
 
-    const filters = JSON.parse(saved)
+    const filters = JSON.parse(saved) as FilterGroup
     console.log('filters', filters)
 
-    console.log('sourceSystemRef.current', sourceSystemRef.current)
-    if (sourceSystemRef.current && filters.sourceSystem) {
-      sourceSystemRef.current.value = filters.sourceSystem
-    }
-    if (levelRef.current && filters.level) {
-      levelRef.current.value = filters.level
-    }
-    if (typeRef.current && filters.type) {
-      typeRef.current.value = filters.type
-    }
-    if (statusRef.current && filters.status) {
-      statusRef.current.value = filters.status
-    }
+    if (!filters) return
 
-    // TextField
-    if (keywordRef.current && filters.keyword) {
-      keywordRef.current.value = filters.keyword
-    }
+    setFieldsDefault(filters)
+    setResetKey((prev) => prev + 1)
 
-    // DateTimePicker
-    setStringTime(filters.stringTime || '')
-    setStartTime(filters.startTime ? dayjs(filters.startTime) : null)
-    setEndTime(filters.endTime ? dayjs(filters.endTime) : null)
+    // 觸發搜尋
+    const formData = new FormData(formRef.current)
+    const data = Object.fromEntries(formData.entries())
+    updateFilterGroup(data as Partial<FilterGroup>)
   }
   //#endregion 按鈕事件
 
@@ -287,15 +181,14 @@ export default function LogSearchSection({
       >
         <Grid container spacing={2}>
           <Grid size={3}>
-            <FormControl fullWidth sx={{ m: 1 }}>
+            <FormControl fullWidth>
               <InputLabel id='select-source-system-label'>所屬服務</InputLabel>
               <Select
                 id='select-source-system'
                 name='sourceSystem'
                 label='所屬服務'
                 labelId='select-source-system-label'
-                defaultValue=''
-                inputRef={sourceSystemRef}
+                defaultValue={fieldsDefault?.sourceSystem ?? ''}
               >
                 {SOURCE_SYSTEM_OPTION.map((option) => (
                   <MenuItem key={option.value} value={option.value}>
@@ -306,15 +199,14 @@ export default function LogSearchSection({
             </FormControl>
           </Grid>
           <Grid size={3}>
-            <FormControl fullWidth sx={{ m: 1 }}>
+            <FormControl fullWidth>
               <InputLabel id='select-level-label'>分級</InputLabel>
               <Select
                 id='select-level'
                 name='level'
                 label='分級'
                 labelId='select-level-label'
-                defaultValue=''
-                inputRef={levelRef}
+                defaultValue={fieldsDefault?.level ?? ''}
               >
                 {LEVEL_OPTION.map((option) => (
                   <MenuItem key={option.value} value={option.value}>
@@ -325,15 +217,14 @@ export default function LogSearchSection({
             </FormControl>
           </Grid>
           <Grid size={3}>
-            <FormControl fullWidth sx={{ m: 1 }}>
+            <FormControl fullWidth>
               <InputLabel id='select-log-type-label'>Log 類型</InputLabel>
               <Select
                 id='select-log-type'
                 name='type'
                 label='Log 類型'
                 labelId='select-log-type-label'
-                defaultValue=''
-                inputRef={typeRef}
+                defaultValue={fieldsDefault?.type ?? ''}
               >
                 {TYPE_OPTION.map((option) => (
                   <MenuItem key={option.value} value={option.value}>
@@ -344,15 +235,15 @@ export default function LogSearchSection({
             </FormControl>
           </Grid>
           <Grid size={3}>
-            <FormControl fullWidth sx={{ m: 1 }}>
+            <FormControl fullWidth>
+              {/* TODO:  HTTP 狀態碼是在 log type 為 http 時才有 */}
               <InputLabel id='select-status-label'>http 狀態碼</InputLabel>
               <Select
                 id='select-status'
                 name='status'
                 label='http 狀態碼'
                 labelId='select-status-label'
-                defaultValue=''
-                inputRef={statusRef}
+                defaultValue={fieldsDefault?.status ?? ''}
               >
                 {STATUS_OPTION.map((option) => (
                   <MenuItem key={option.value} value={option.value}>
@@ -363,56 +254,71 @@ export default function LogSearchSection({
             </FormControl>
           </Grid>
           {/* 查詢期間區塊 */}
-          <Grid size={9}>
-            <FormControl fullWidth sx={{ m: 1 }}>
+          <Grid size={12}>
+            <FormControl fullWidth>
               <FormLabel>查詢期間</FormLabel>
-              <Stack direction='row' spacing={2} sx={{ alignItems: 'center' }}>
-                <Select
-                  name='stringTime'
-                  value={stringTime}
-                  defaultValue=''
-                  displayEmpty
-                  onChange={handleStringTimeChange}
-                  sx={{ flex: 1 }}
+              <RadioGroup
+                name='timeFilterBy'
+                defaultValue={fieldsDefault?.timeFilterBy}
+              >
+                <Stack
+                  direction='row'
+                  spacing={2}
+                  sx={{ alignItems: 'center' }}
                 >
-                  <MenuItem value=''>請選擇查詢期間</MenuItem>
-                  {TIME_OPTION.map((option) => (
-                    <MenuItem key={option.label} value={option.value}>
-                      {option.label}
-                    </MenuItem>
-                  ))}
-                </Select>
-                <LocalizationProvider
-                  adapterLocale='zh-tw'
-                  dateAdapter={AdapterDayjs}
-                >
-                  <DateTimePicker
-                    name='startTime'
-                    label='起始時間'
-                    value={startTime}
-                    onChange={handleDateTimeChange('start')}
-                    slotProps={{ textField: { sx: { flex: 1 } } }}
-                  />
-                  <DateTimePicker
-                    name='endTime'
-                    label='結束時間'
-                    value={endTime}
-                    onChange={handleDateTimeChange('end')}
-                    slotProps={{ textField: { sx: { flex: 1 } } }}
-                  />
-                </LocalizationProvider>
-              </Stack>
+                  <Radio value={ETimeFilterBy.Relative} />
+                  <Select
+                    name='stringTime'
+                    defaultValue={fieldsDefault?.stringTime ?? ''}
+                    displayEmpty
+                    sx={{ flex: 1 }}
+                  >
+                    <MenuItem value=''>請選擇查詢期間</MenuItem>
+                    {TIME_OPTION.map((option) => (
+                      <MenuItem key={option.label} value={option.value}>
+                        {option.label}
+                      </MenuItem>
+                    ))}
+                  </Select>
+                  <Divider flexItem orientation='vertical' />
+                  <Radio value={ETimeFilterBy.Absolute} />
+                  <LocalizationProvider
+                    adapterLocale='zh-tw'
+                    dateAdapter={AdapterDayjs}
+                  >
+                    <DateTimePicker
+                      name='startTime'
+                      label='起始時間'
+                      defaultValue={
+                        fieldsDefault?.startTime
+                          ? dayjs(fieldsDefault.startTime)
+                          : undefined
+                      }
+                      slotProps={{ textField: { sx: { flex: 1 } } }}
+                    />
+                    <DateTimePicker
+                      name='endTime'
+                      label='結束時間'
+                      defaultValue={
+                        fieldsDefault?.endTime
+                          ? dayjs(fieldsDefault.endTime)
+                          : undefined
+                      }
+                      slotProps={{ textField: { sx: { flex: 1 } } }}
+                    />
+                  </LocalizationProvider>
+                </Stack>
+              </RadioGroup>
             </FormControl>
           </Grid>
-          <Grid size={3}>
-            <FormControl fullWidth sx={{ m: 1 }}>
+          <Grid size={12}>
+            <FormControl fullWidth>
               <FormLabel>文字搜尋</FormLabel>
               <TextField
                 id='input-keyword'
                 name='keyword'
                 placeholder='請輸入想搜尋的文字'
-                defaultValue=''
-                inputRef={keywordRef}
+                defaultValue={fieldsDefault?.keyword}
               />
             </FormControl>
           </Grid>

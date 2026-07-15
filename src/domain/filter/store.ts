@@ -9,7 +9,11 @@ const initialState: FilterStore = {
   filterGroup: {
     keyword: undefined,
     type: undefined,
-    createTime: undefined,
+    status: undefined,
+    stringTime: undefined,
+    timeFilterBy: undefined,
+    startTime: undefined,
+    endTime: undefined,
     sourceSystem: undefined,
     level: undefined,
   },

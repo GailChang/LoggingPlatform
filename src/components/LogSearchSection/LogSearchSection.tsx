@@ -9,7 +9,6 @@ import {
   AccordionProps,
   Box,
   Button,
-  Divider,
   FormControl,
   FormLabel,
   Grid,
@@ -27,6 +26,7 @@ import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker'
 import dayjs from 'dayjs'
 import 'dayjs/locale/zh-tw'
 import { useRef, useState } from 'react'
+import FlexDivider from '../FlexDivider'
 import SearchSection from '../SearchSection'
 
 //#region 常數
@@ -179,7 +179,7 @@ export default function LogSearchSection({
         onSubmit={handleSubmit}
       >
         <Grid container spacing={2}>
-          <Grid size={3}>
+          <Grid size={{ sm: 6, md: 3 }}>
             <FormControl fullWidth>
               <InputLabel id='select-source-system-label'>所屬服務</InputLabel>
               <Select
@@ -197,7 +197,7 @@ export default function LogSearchSection({
               </Select>
             </FormControl>
           </Grid>
-          <Grid size={3}>
+          <Grid size={{ sm: 6, md: 3 }}>
             <FormControl fullWidth>
               <InputLabel id='select-level-label'>分級</InputLabel>
               <Select
@@ -215,7 +215,7 @@ export default function LogSearchSection({
               </Select>
             </FormControl>
           </Grid>
-          <Grid size={3}>
+          <Grid size={{ sm: 6, md: 3 }}>
             <FormControl fullWidth>
               <InputLabel id='select-log-type-label'>Log 類型</InputLabel>
               <Select
@@ -233,7 +233,7 @@ export default function LogSearchSection({
               </Select>
             </FormControl>
           </Grid>
-          <Grid size={3}>
+          <Grid size={{ sm: 6, md: 3 }}>
             <FormControl fullWidth>
               {/* TODO:  HTTP 狀態碼是在 log type 為 http 時才有 */}
               <InputLabel id='select-status-label'>http 狀態碼</InputLabel>
@@ -263,23 +263,36 @@ export default function LogSearchSection({
                 <Stack
                   direction='row'
                   spacing={2}
-                  sx={{ alignItems: 'center' }}
+                  sx={{ alignItems: 'center', flexWrap: 'wrap' }}
+                  useFlexGap
                 >
-                  <Radio value={ETimeFilterBy.Relative} />
-                  <Select
-                    name='stringTime'
-                    defaultValue={fieldsDefault?.stringTime ?? ''}
-                    displayEmpty
-                    sx={{ flex: 1 }}
+                  <Stack
+                    direction='row'
+                    spacing={2}
+                    sx={{
+                      width: { sm: '100%', lg: 'unset' },
+                      flex: { sm: 'none', lg: 1 },
+                    }}
                   >
-                    <MenuItem value=''>請選擇查詢期間</MenuItem>
-                    {TIME_OPTION.map((option) => (
-                      <MenuItem key={option.label} value={option.value}>
-                        {option.label}
-                      </MenuItem>
-                    ))}
-                  </Select>
-                  <Divider flexItem orientation='vertical' />
+                    <Radio value={ETimeFilterBy.Relative} />
+                    <Select
+                      name='stringTime'
+                      defaultValue={fieldsDefault?.stringTime ?? ''}
+                      displayEmpty
+                      sx={{
+                        minWidth: { lg: '217px' },
+                        flex: 1,
+                      }}
+                    >
+                      <MenuItem value=''>請選擇查詢期間</MenuItem>
+                      {TIME_OPTION.map((option) => (
+                        <MenuItem key={option.label} value={option.value}>
+                          {option.label}
+                        </MenuItem>
+                      ))}
+                    </Select>
+                  </Stack>
+                  <FlexDivider breakpoint='lg' />
                   <Radio value={ETimeFilterBy.Absolute} />
                   <LocalizationProvider
                     adapterLocale='zh-tw'
@@ -293,7 +306,9 @@ export default function LogSearchSection({
                           ? dayjs(fieldsDefault.startTime)
                           : undefined
                       }
-                      slotProps={{ textField: { sx: { flex: 1 } } }}
+                      slotProps={{
+                        textField: { sx: { minWidth: '217px', flex: 1 } },
+                      }}
                     />
                     <DateTimePicker
                       name='endTime'
@@ -303,7 +318,9 @@ export default function LogSearchSection({
                           ? dayjs(fieldsDefault.endTime)
                           : undefined
                       }
-                      slotProps={{ textField: { sx: { flex: 1 } } }}
+                      slotProps={{
+                        textField: { sx: { minWidth: '217px', flex: 1 } },
+                      }}
                     />
                   </LocalizationProvider>
                 </Stack>
@@ -323,24 +340,19 @@ export default function LogSearchSection({
           </Grid>
           <Grid size={12}>
             <Stack
-              direction='row-reverse'
+              direction='row'
               spacing={2}
-              sx={{ alignItems: 'center' }}
+              sx={{
+                justifyContent: 'flex-end',
+                alignItems: 'center',
+              }}
             >
               <Button
-                variant='contained'
-                type='submit'
-                startIcon={<SearchRoundedIcon />}
-              >
-                查詢
-              </Button>
-              <Button
                 variant='outlined'
-                color='secondary'
-                onClick={handleReset}
-                startIcon={<RestartAltRoundedIcon />}
+                onClick={handleSaveFilters}
+                startIcon={<SaveRoundedIcon />}
               >
-                重設
+                儲存條件
               </Button>
               <Button
                 variant='outlined'
@@ -352,10 +364,18 @@ export default function LogSearchSection({
               </Button>
               <Button
                 variant='outlined'
-                onClick={handleSaveFilters}
-                startIcon={<SaveRoundedIcon />}
+                color='secondary'
+                onClick={handleReset}
+                startIcon={<RestartAltRoundedIcon />}
               >
-                儲存條件
+                重設
+              </Button>
+              <Button
+                variant='contained'
+                type='submit'
+                startIcon={<SearchRoundedIcon />}
+              >
+                查詢
               </Button>
             </Stack>
           </Grid>

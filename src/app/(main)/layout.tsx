@@ -37,7 +37,13 @@ const MainLayout: React.FC<React.PropsWithChildren> = ({ children }) => {
             sx={{ flex: 1, overflow: 'hidden' }}
           >
             <Breadcrumb sx={{ flexGrow: 0, flexShrink: 0 }} />
-            <Box sx={{ flexGrow: 1, flexShrink: 1, overflow: 'auto' }}>
+            <Box
+              sx={{
+                flexGrow: 1,
+                flexShrink: 1,
+                overflow: 'auto',
+              }}
+            >
               {children}
             </Box>
           </Stack>

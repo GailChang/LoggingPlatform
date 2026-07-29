@@ -5,7 +5,7 @@ import { setLogs, updateLoadingState } from '@/domain/logs/store'
 import { useEffect } from 'react'
 
 const LogDataLayer: React.FC<React.PropsWithChildren> = ({ children }) => {
-  const { data, isLoading } = useLogs(
+  const { isLoading } = useLogs(
     (data) => {
       setLogs(data)
     },

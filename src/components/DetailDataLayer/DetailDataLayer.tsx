@@ -8,7 +8,7 @@ import { useLog } from '@/domain/logs/hooks'
 import { useEffect } from 'react'
 
 const DetailDataLayer: React.FC<React.PropsWithChildren> = ({ children }) => {
-  const { data, isLoading } = useLog(
+  const { isLoading } = useLog(
     (data) => {
       if (data) setActiveLog(data)
     },

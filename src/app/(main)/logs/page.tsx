@@ -1,26 +1,29 @@
 'use client'
 
-import BottomDrawer from '@/components/BottomDrawer'
+import { drawerBleeding } from '@/components/BottomDrawer/BottomDrawer'
 import DetailDataLayer from '@/components/DetailDataLayer/DetailDataLayer'
 import DetailForm from '@/components/DetailForm'
 import LogDataLayer from '@/components/LogDataLayer'
 import LogSearchSection from '@/components/LogSearchSection'
 import LogViewer from '@/components/LogViewer'
 import { Box, Container, Typography } from '@mui/material'
-import { useCallback, useRef, useState } from 'react'
+import { useState } from 'react'
+
+import dynamic from 'next/dynamic'
+
+const DynamicBottomDrawer = dynamic(() => import('@/components/BottomDrawer'), {
+  ssr: false,
+})
 
 export default function LogsPage() {
   const [isDrawerOpen, setIsDrawerOpen] = useState(false)
-  const containerRef = useRef<HTMLDivElement | null>(null)
-  const getContainer = useCallback(() => containerRef.current, [])
 
   return (
-    <>
+    <Box sx={{ height: 'stretch', overflow: 'hidden', position: 'relative' }}>
       <Container
         id='conrel'
-        ref={containerRef}
         maxWidth='xl'
-        sx={{ position: 'relative', overflow: 'hidden' }}
+        sx={{ height: 'stretch', overflow: 'auto', pb: `${drawerBleeding}px` }}
       >
         <Box id='logPage' sx={{ py: 3 }}>
           <Typography component='h1' variant='h4' gutterBottom>
@@ -34,15 +37,11 @@ export default function LogsPage() {
           </Box>
         </Box>
       </Container>
-      <BottomDrawer
-        container={getContainer}
-        open={isDrawerOpen}
-        toggleOpen={setIsDrawerOpen}
-      >
+      <DynamicBottomDrawer open={isDrawerOpen} toggleOpen={setIsDrawerOpen}>
         <DetailDataLayer>
           <DetailForm />
         </DetailDataLayer>
-      </BottomDrawer>
-    </>
+      </DynamicBottomDrawer>
+    </Box>
   )
 }

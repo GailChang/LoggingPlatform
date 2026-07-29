@@ -14,8 +14,7 @@ import {
   Skeleton,
   TextField,
 } from '@mui/material'
-import { useState } from 'react'
-import { GeneralLogEntry, LogEntry } from '../../domain/logs/schema'
+import { GeneralLogEntry } from '../../domain/logs/schema'
 import BorderTitleBox from '../BorderTitleBox'
 import DetailFormSectionApp from '../DetailFormSectionApp'
 import DetailFormSectionHttp from '../DetailFormSectionHttp'
@@ -34,7 +33,7 @@ const initialLog: GeneralLogEntry = {
 export default function DetailForm() {
   const log = useActiveLogStore((state) => state.log)
   const isLoading = useActiveLogStore((state) => state.isLoading)
-  const [fieldsDefault, setFieldsDefault] = useState<LogEntry | null>(null)
+  // const [fieldsDefault, setFieldsDefault] = useState<LogEntry | null>(null)
 
   let content
   let displayLog
@@ -60,6 +59,8 @@ export default function DetailForm() {
       autoComplete='off'
       noValidate
       sx={{
+        height: 'stretch',
+        overflow: 'auto',
         padding: '0 2rem',
         '& .MuiTextField-root': { m: 1 },
       }}
@@ -106,7 +107,7 @@ export default function DetailForm() {
                   variant='standard'
                   name='sourceSystem'
                   defaultValue={
-                    displayLog.sourceSystem.trim() != ''
+                    displayLog.sourceSystem.trim() !== ''
                       ? displayLog.sourceSystem
                       : '-'
                   }
@@ -130,7 +131,7 @@ export default function DetailForm() {
                   variant='standard'
                   name='computerName'
                   defaultValue={
-                    displayLog.computerName.trim() != ''
+                    displayLog.computerName.trim() !== ''
                       ? displayLog.computerName
                       : '-'
                   }
@@ -154,7 +155,7 @@ export default function DetailForm() {
                   variant='standard'
                   name='type'
                   defaultValue={
-                    displayLog.type != undefined ? displayLog.type : '-'
+                    displayLog.type !== undefined ? displayLog.type : '-'
                   }
                   slotProps={{
                     htmlInput: {
@@ -171,7 +172,7 @@ export default function DetailForm() {
       <BorderTitleBox title='狀態資訊'>
         {isLoading ? (
           <Skeleton variant='rectangular' height={250} />
-        ) : displayLog == initialLog ? (
+        ) : displayLog === initialLog ? (
           <div>無資料</div>
         ) : (
           content

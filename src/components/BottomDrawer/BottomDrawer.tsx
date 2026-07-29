@@ -1,5 +1,4 @@
 'use client'
-import { Global } from '@emotion/react'
 import { SwipeableDrawer, SwipeableDrawerProps } from '@mui/material'
 import { grey } from '@mui/material/colors'
 import { styled } from '@mui/material/styles'
@@ -12,7 +11,7 @@ type TDrawerProps = {
   toggleOpen: Dispatch<SetStateAction<boolean>>
 }
 
-const drawerBleeding = 40
+export const drawerBleeding = 40
 
 const StyledBox = styled('div')(({ theme }) => ({
   backgroundColor: '#fff',
@@ -40,51 +39,44 @@ export default function BottomDrawer({
   children,
   toggleOpen,
 }: TDrawerProps) {
-  if (container == null) {
-    console.log('container is null')
-    return
-  }
-
   return (
     <>
-      <Global
-        styles={{
-          '.MuiDrawer-root > .MuiPaper-root': {
-            height: `calc(50% - ${drawerBleeding}px)`,
-            overflow: 'visible',
-          },
-        }}
-      />
       <SwipeableDrawer
         id='swDrawer'
         anchor='bottom'
+        disablePortal
         disableSwipeToOpen={false}
         ModalProps={{
-          container: container,
-          style: {
-            position: 'absolute',
-          },
           keepMounted: true,
+          container: container,
         }}
         onClose={() => toggleOpen(false)}
         onOpen={() => toggleOpen(true)}
         open={open}
         slotProps={{
           backdrop: {
-            style: {
+            sx: {
               position: 'absolute',
             },
           },
           paper: {
-            style: {
+            sx: {
               position: 'absolute',
+              height: `calc(100% - ${drawerBleeding}px - 40px)`,
+              overflow: 'visible',
             },
           },
+          swipeArea: {
+            onClick: () => toggleOpen((prev) => !prev),
+            sx: { position: 'absolute' },
+          },
         }}
-        swipeAreaWidth={drawerBleeding}
+        swipeAreaWidth={40}
+        sx={{
+          position: 'absolute',
+        }}
       >
         <StyledBox
-          onClick={() => toggleOpen((prev) => !prev)}
           sx={{
             position: 'absolute',
             top: -drawerBleeding,
@@ -93,8 +85,8 @@ export default function BottomDrawer({
             visibility: 'visible',
             right: 0,
             left: 0,
-            pointerEvents: 'auto',
             minHeight: '40px',
+            boxShadow: '0px -2px 4px rgba(0, 0, 0, 0.1)',
           }}
         >
           <Puller />

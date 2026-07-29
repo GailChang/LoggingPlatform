@@ -31,7 +31,6 @@ const MainLayout: React.FC<React.PropsWithChildren> = ({ children }) => {
         <Toolbar />
         <Stack direction='row' sx={{ flex: 1, overflow: 'hidden' }}>
           <Sidebar isOpen={isOpen} />
-          {/* TODO: Sidebar Drawer */}
           <Stack
             component='main'
             direction='column'

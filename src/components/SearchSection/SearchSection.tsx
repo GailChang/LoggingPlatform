@@ -22,13 +22,11 @@ export default function SearchSection({
       {...props}
       sx={{
         border: '1px solid #8f8f8f',
-        '&:last-of-type': {
-          borderBottomLeftRadius: 15,
-          borderBottomRightRadius: 15,
-        },
         '&:first-of-type': {
           borderTopLeftRadius: 15,
           borderTopRightRadius: 15,
+          borderBottomLeftRadius: 15,
+          borderBottomRightRadius: 15,
         },
       }}
     >

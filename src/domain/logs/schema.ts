@@ -1,5 +1,5 @@
 export enum ELogType {
-  // Application = 'application',
+  Application = 'application',
   System = 'system',
   Http = 'http',
 }
@@ -21,10 +21,10 @@ export type GeneralLogEntry = {
   messages: string
 }
 
-// export type ApplicationLogEntry = GeneralLogEntry & {
-//   applicationName: string
-//   threadId: string
-// }
+export type ApplicationLogEntry = SystemLogEntry & {
+  applicationName: string
+  threadId: string
+}
 
 export type SystemLogEntry = GeneralLogEntry & {
   errorCode: string
@@ -39,4 +39,4 @@ export type HttpLogEntry = GeneralLogEntry & {
   response: string
 }
 
-export type LogEntry = SystemLogEntry | HttpLogEntry
+export type LogEntry = ApplicationLogEntry | SystemLogEntry | HttpLogEntry

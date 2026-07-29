@@ -2,11 +2,15 @@ import useSWR from 'swr'
 import type { FilterGroup } from '../filter/schema'
 import { useFilterStore } from '../filter/store'
 import { sleep } from '../shared/sleep'
+import { useActiveLogStore } from './activeStore'
 import { logApi } from './api'
 import MOCK_LOGS from './mock'
 import { ELogType, type LogEntry } from './schema'
 
 type LogsKey = readonly ['logs', FilterGroup, boolean]
+type LogKey = readonly ['log', string, boolean]
+
+const useMock = process.env.NEXT_PUBLIC_USE_MOCK === 'true'
 
 const mockGetLogs = async (filters: FilterGroup): Promise<LogEntry[]> => {
   let filteredLogs = [...(MOCK_LOGS as LogEntry[])]
@@ -41,13 +45,16 @@ const mockGetLogs = async (filters: FilterGroup): Promise<LogEntry[]> => {
   return sleep<LogEntry[]>(2000, filteredLogs)
 }
 
+const mockGetLog = async (id: string): Promise<LogEntry | undefined> => {
+  const log = MOCK_LOGS.find((log) => log.id === id)
+  return sleep<LogEntry | undefined>(2000, log || undefined)
+}
+
 export function useLogs(
   onSuccess?: (data: LogEntry[]) => void,
   onError?: (error: unknown) => void
 ) {
   const filterState = useFilterStore((state) => state.filterGroup)
-  const useMock = process.env.NEXT_PUBLIC_USE_MOCK === 'true'
-
   const key: LogsKey = ['logs', filterState, useMock]
 
   return useSWR<LogEntry[], Error, LogsKey>(
@@ -61,6 +68,24 @@ export function useLogs(
   )
 }
 
-export function useLog(id: string) {
-  return useSWR<LogEntry>(id ? `logs/${id}` : null, () => logApi.getLogById(id))
+export function useLog(
+  onSuccess?: (data: LogEntry | undefined) => void,
+  onError?: (error: unknown) => void
+) {
+  const storeId = useActiveLogStore((state) => state.searchId)
+
+  let searchId = storeId
+  if (!searchId) searchId = ''
+
+  const key: LogKey = ['log', searchId, useMock]
+
+  return useSWR<LogEntry | undefined, Error, LogKey>(
+    key,
+    ([, id]) => (useMock ? mockGetLog(id) : logApi.getLogById(id)),
+    {
+      revalidateOnFocus: false,
+      onSuccess: onSuccess,
+      onError: onError,
+    }
+  )
 }

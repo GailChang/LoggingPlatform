@@ -1,6 +1,8 @@
 'use client'
 
 import BottomDrawer from '@/components/BottomDrawer'
+import DetailDataLayer from '@/components/DetailDataLayer/DetailDataLayer'
+import DetailForm from '@/components/DetailForm'
 import LogDataLayer from '@/components/LogDataLayer'
 import LogSearchSection from '@/components/LogSearchSection'
 import LogViewer from '@/components/LogViewer'
@@ -36,7 +38,11 @@ export default function LogsPage() {
         container={getContainer}
         open={isDrawerOpen}
         toggleOpen={setIsDrawerOpen}
-      />
+      >
+        <DetailDataLayer>
+          <DetailForm />
+        </DetailDataLayer>
+      </BottomDrawer>
     </>
   )
 }

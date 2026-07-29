@@ -11,13 +11,18 @@ export enum ELevel {
   Debug = 'DEBUG',
 }
 
+export type TFormSectionProps = {
+  isLoading: boolean
+  logEntry: ApplicationLogEntry | SystemLogEntry | HttpLogEntry
+}
+
 export type GeneralLogEntry = {
   id: string
-  type: ELogType
+  type: ELogType | undefined
   createTime: string
   sourceSystem: string
   computerName: string
-  level: ELevel
+  level: ELevel | undefined
   messages: string
 }
 

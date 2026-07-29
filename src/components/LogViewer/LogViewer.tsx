@@ -1,4 +1,5 @@
 'use client'
+import { updateSearchId, useActiveLogStore } from '@/domain/logs/activeStore'
 import { useLogsStore } from '@/domain/logs/store'
 import {
   Chip,
@@ -10,7 +11,7 @@ import {
   TableRow,
   Typography,
 } from '@mui/material'
-import { Dispatch, SetStateAction, useMemo, useState } from 'react'
+import { Dispatch, SetStateAction, useMemo } from 'react'
 
 type TLogViewerProps = {
   toggleOpen: Dispatch<SetStateAction<boolean>>
@@ -19,7 +20,7 @@ type TLogViewerProps = {
 export default function LogViewer({ toggleOpen }: TLogViewerProps) {
   const logs = useLogsStore((state) => state.logs)
   const isLoading = useLogsStore((state) => state.isLoading)
-  const [selectedIndex, setSelectedIndex] = useState(-1)
+  const searchId = useActiveLogStore((state) => state.searchId)
 
   const displayLogs = useMemo(() => {
     return logs.map((log) => ({
@@ -28,9 +29,11 @@ export default function LogViewer({ toggleOpen }: TLogViewerProps) {
     }))
   }, [logs])
 
-  const handleRowClick = (index: number) => {
-    setSelectedIndex(index)
-    console.log(`打開${index} Log`)
+  const handleRowClick = (id: string) => {
+    // setSelectedIndex(index)
+    console.log(`打開${id} Log`)
+    updateSearchId(id)
+    console.log(searchId)
     toggleOpen(true)
   }
 
@@ -68,16 +71,16 @@ export default function LogViewer({ toggleOpen }: TLogViewerProps) {
               </TableCell>
             </TableRow>
           ) : (
-            displayLogs.map((log, index) => (
+            displayLogs.map((log) => (
               <TableRow
                 component='tr'
-                key={index}
+                key={log.id}
                 hover
-                onClick={() => handleRowClick(index)}
+                onClick={() => handleRowClick(log.id)}
                 sx={{
                   cursor: 'pointer',
                   backgroundColor:
-                    index == selectedIndex ? 'action.selected' : 'transparent',
+                    log.id == searchId ? 'action.selected' : 'transparent',
                 }}
               >
                 <TableCell>{log.createTime.toLocaleString()}</TableCell>

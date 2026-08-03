@@ -1,13 +1,8 @@
 import { useActiveLogStore } from '@/domain/logs/activeStore'
 import { ELogType, HttpLogEntry } from '@/domain/logs/schema'
 import { isHttpLogEntry } from '@/domain/shared/logEntryUtility'
-import {
-  FormControl,
-  FormLabel,
-  Grid,
-  Skeleton,
-  TextField,
-} from '@mui/material'
+import { FormControl, FormLabel, Grid, Skeleton } from '@mui/material'
+import DetailText from '../DetailText'
 
 const initialHttpLog: HttpLogEntry = {
   id: '',
@@ -33,135 +28,68 @@ export default function DetailFormSectionHttp() {
 
   return (
     <Grid container spacing={2}>
-      <Grid size={{ sm: 6, md: 4, lg: 3 }}>
+      <Grid size={{ xs: 12, sm: 6, md: 4, lg: 3 }}>
         <FormControl fullWidth>
           <FormLabel>http 狀態碼</FormLabel>
           {isLoading ? (
             <Skeleton variant='text' sx={{ fontSize: '2rem' }} />
           ) : (
-            <TextField
-              variant='standard'
-              name='status'
-              defaultValue={displayLog.status != -1 ? displayLog.status : '-'}
-              slotProps={{
-                htmlInput: {
-                  readOnly: true,
-                  disabled: true,
-                },
-              }}
+            <DetailText
+              emptyDefinition={(input: number | string | undefined | null) =>
+                input === -1
+              }
+              input={displayLog.status}
             />
           )}
         </FormControl>
       </Grid>
-      <Grid size={{ sm: 6, md: 4, lg: 3 }}>
+      <Grid size={{ xs: 12, sm: 6, md: 4, lg: 3 }}>
         <FormControl fullWidth>
           <FormLabel>請求方法</FormLabel>
           {isLoading ? (
             <Skeleton variant='text' sx={{ fontSize: '2rem' }} />
           ) : (
-            <TextField
-              variant='standard'
-              name='method'
-              defaultValue={
-                displayLog.method.trim() != '' ? displayLog.method : '-'
-              }
-              slotProps={{
-                htmlInput: {
-                  readOnly: true,
-                  disabled: true,
-                },
-              }}
-            />
+            <DetailText input={displayLog.method} />
           )}
         </FormControl>
       </Grid>
-      <Grid size={{ sm: 6, md: 4, lg: 3 }}>
+      <Grid size={{ xs: 12, sm: 6, md: 4, lg: 3 }}>
         <FormControl fullWidth>
           <FormLabel>請求地址</FormLabel>
           {isLoading ? (
             <Skeleton variant='text' sx={{ fontSize: '2rem' }} />
           ) : (
-            <TextField
-              variant='standard'
-              name='path'
-              defaultValue={
-                displayLog.path.trim() != '' ? displayLog.path : '-'
-              }
-              slotProps={{
-                htmlInput: {
-                  readOnly: true,
-                  disabled: true,
-                },
-              }}
-            />
+            <DetailText input={displayLog.path} />
           )}
         </FormControl>
       </Grid>
-      <Grid size={{ sm: 6, md: 4, lg: 3 }}>
+      <Grid size={{ xs: 12, sm: 6, md: 4, lg: 3 }}>
         <FormControl fullWidth>
           <FormLabel>請求地址字串</FormLabel>
           {isLoading ? (
             <Skeleton variant='text' sx={{ fontSize: '2rem' }} />
           ) : (
-            <TextField
-              variant='standard'
-              name='requestUrl'
-              defaultValue={
-                displayLog.requestUrl.trim() != '' ? displayLog.requestUrl : '-'
-              }
-              slotProps={{
-                htmlInput: {
-                  readOnly: true,
-                  disabled: true,
-                },
-              }}
-            />
+            <DetailText input={displayLog.requestUrl} />
           )}
         </FormControl>
       </Grid>
-      <Grid size={{ sm: 6, md: 4, lg: 3 }}>
+      <Grid size={{ xs: 12, sm: 6, md: 4, lg: 3 }}>
         <FormControl fullWidth>
           <FormLabel>回應內容</FormLabel>
           {isLoading ? (
             <Skeleton variant='text' sx={{ fontSize: '2rem' }} />
           ) : (
-            <TextField
-              variant='standard'
-              name='response'
-              defaultValue={
-                displayLog.response.trim() != '' ? displayLog.response : '-'
-              }
-              slotProps={{
-                htmlInput: {
-                  readOnly: true,
-                  disabled: true,
-                },
-              }}
-            />
+            <DetailText input={displayLog.response} />
           )}
         </FormControl>
       </Grid>
-      <Grid size={{ sm: 6, md: 4, lg: 3 }}>
+      <Grid size={{ xs: 12, sm: 6, md: 4, lg: 3 }}>
         <FormControl fullWidth>
           <FormLabel>log 訊息</FormLabel>
           {isLoading ? (
             <Skeleton variant='text' sx={{ fontSize: '2rem' }} />
           ) : (
-            <TextField
-              variant='standard'
-              name='messages'
-              defaultValue={
-                displayLog.messages.trim() != '' ? displayLog.messages : '-'
-              }
-              multiline
-              rows={4}
-              slotProps={{
-                htmlInput: {
-                  readOnly: true,
-                  disabled: true,
-                },
-              }}
-            />
+            <DetailText input={displayLog.messages} />
           )}
         </FormControl>
       </Grid>

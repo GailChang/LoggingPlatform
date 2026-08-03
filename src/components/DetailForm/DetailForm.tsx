@@ -12,13 +12,16 @@ import {
   FormLabel,
   Grid,
   Skeleton,
-  TextField,
+  Typography,
 } from '@mui/material'
+import { grey } from '@mui/material/colors'
+import dayjs from 'dayjs'
 import { GeneralLogEntry } from '../../domain/logs/schema'
 import BorderTitleBox from '../BorderTitleBox'
 import DetailFormSectionApp from '../DetailFormSectionApp'
 import DetailFormSectionHttp from '../DetailFormSectionHttp'
 import DetailFormSectionSystem from '../DetailFormSectionSystem'
+import DetailText from '../DetailText'
 
 const initialLog: GeneralLogEntry = {
   id: '',
@@ -55,9 +58,6 @@ export default function DetailForm() {
 
   return (
     <Box
-      component='form'
-      autoComplete='off'
-      noValidate
       sx={{
         height: 'stretch',
         overflow: 'auto',
@@ -65,105 +65,68 @@ export default function DetailForm() {
         '& .MuiTextField-root': { m: 1 },
       }}
     >
-      <h2
-        style={{
-          marginBottom: '2rem',
+      <Typography
+        variant='h5'
+        sx={{
+          marginBottom: '1.5rem',
+          fontWeight: 'bold',
         }}
       >
         Log 詳細資料
-      </h2>
-      <h3>發生時間：</h3>
+      </Typography>
+      <Typography
+        gutterBottom
+        sx={{ fontSize: '1.2rem', fontWeight: 'normal', color: grey[800] }}
+      >
+        發生時間：
+        {isLoading ? (
+          <Skeleton
+            variant='text'
+            sx={{ display: 'inline-block', fontSize: '1em', width: 250 }}
+          />
+        ) : (
+          dayjs(displayLog.createTime).format('YYYY-MM-DD HH:mm:ss')
+        )}
+      </Typography>
       <BorderTitleBox title='主要資訊'>
         <Grid container spacing={2}>
-          <Grid size={{ sm: 6, md: 4, lg: 3 }}>
+          <Grid size={{ xs: 12, sm: 6, md: 4, lg: 3 }}>
             <FormControl fullWidth>
               <FormLabel>分級</FormLabel>
               {isLoading ? (
                 <Skeleton variant='text' sx={{ fontSize: '2rem' }} />
               ) : (
-                <TextField
-                  variant='standard'
-                  name='level'
-                  defaultValue={
-                    displayLog.level != undefined ? displayLog.level : '-'
-                  }
-                  slotProps={{
-                    htmlInput: {
-                      readOnly: true,
-                      disabled: true,
-                    },
-                  }}
-                />
+                <DetailText input={displayLog.level} />
               )}
             </FormControl>
           </Grid>
-          <Grid size={{ sm: 6, md: 4, lg: 3 }}>
+          <Grid size={{ xs: 12, sm: 6, md: 4, lg: 3 }}>
             <FormControl fullWidth>
               <FormLabel>所屬服務</FormLabel>
               {isLoading ? (
                 <Skeleton variant='text' sx={{ fontSize: '2rem' }} />
               ) : (
-                <TextField
-                  variant='standard'
-                  name='sourceSystem'
-                  defaultValue={
-                    displayLog.sourceSystem.trim() !== ''
-                      ? displayLog.sourceSystem
-                      : '-'
-                  }
-                  slotProps={{
-                    htmlInput: {
-                      readOnly: true,
-                      disabled: true,
-                    },
-                  }}
-                />
+                <DetailText input={displayLog.sourceSystem} />
               )}
             </FormControl>
           </Grid>
-          <Grid size={{ sm: 6, md: 4, lg: 3 }}>
+          <Grid size={{ xs: 12, sm: 6, md: 4, lg: 3 }}>
             <FormControl fullWidth>
               <FormLabel>主機</FormLabel>
               {isLoading ? (
                 <Skeleton variant='text' sx={{ fontSize: '2rem' }} />
               ) : (
-                <TextField
-                  variant='standard'
-                  name='computerName'
-                  defaultValue={
-                    displayLog.computerName.trim() !== ''
-                      ? displayLog.computerName
-                      : '-'
-                  }
-                  slotProps={{
-                    htmlInput: {
-                      readOnly: true,
-                      disabled: true,
-                    },
-                  }}
-                />
+                <DetailText input={displayLog.computerName} />
               )}
             </FormControl>
           </Grid>
-          <Grid size={{ sm: 6, md: 4, lg: 3 }}>
+          <Grid size={{ xs: 12, sm: 6, md: 4, lg: 3 }}>
             <FormControl fullWidth>
               <FormLabel>Log 類型</FormLabel>
               {isLoading ? (
                 <Skeleton variant='text' sx={{ fontSize: '2rem' }} />
               ) : (
-                <TextField
-                  variant='standard'
-                  name='type'
-                  defaultValue={
-                    displayLog.type !== undefined ? displayLog.type : '-'
-                  }
-                  slotProps={{
-                    htmlInput: {
-                      readOnly: true,
-                      disabled: true,
-                    },
-                  }}
-                />
+                <DetailText input={displayLog.type} />
               )}
             </FormControl>
           </Grid>

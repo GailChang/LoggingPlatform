@@ -1,13 +1,8 @@
 import { useActiveLogStore } from '@/domain/logs/activeStore'
 import { ELogType, SystemLogEntry } from '@/domain/logs/schema'
 import { isSystemLogEntry } from '@/domain/shared/logEntryUtility'
-import {
-  FormControl,
-  FormLabel,
-  Grid,
-  Skeleton,
-  TextField,
-} from '@mui/material'
+import { FormControl, FormLabel, Grid, Skeleton } from '@mui/material'
+import DetailText from '../DetailText'
 
 const initialSystemLog: SystemLogEntry = {
   id: '',
@@ -30,73 +25,33 @@ export default function DetailFormSectionSystem() {
 
   return (
     <Grid container spacing={2}>
-      <Grid size={{ sm: 6, md: 4, lg: 3 }}>
+      <Grid size={{ xs: 12, sm: 6, md: 4, lg: 3 }}>
         <FormControl fullWidth>
           <FormLabel>錯誤代碼</FormLabel>
           {isLoading ? (
             <Skeleton variant='text' sx={{ fontSize: '2rem' }} />
           ) : (
-            <TextField
-              variant='standard'
-              name='errorCode'
-              defaultValue={
-                displayLog.errorCode.trim() != '' ? displayLog.errorCode : '-'
-              }
-              slotProps={{
-                htmlInput: {
-                  readOnly: true,
-                  disabled: true,
-                },
-              }}
-            />
+            <DetailText input={displayLog.errorCode} />
           )}
         </FormControl>
       </Grid>
-      <Grid size={{ sm: 6, md: 4, lg: 3 }}>
+      <Grid size={{ xs: 12, sm: 6, md: 4, lg: 3 }}>
         <FormControl fullWidth>
           <FormLabel>程式碼錯誤處</FormLabel>
           {isLoading ? (
             <Skeleton variant='text' sx={{ fontSize: '2rem' }} />
           ) : (
-            <TextField
-              variant='standard'
-              name='lineInformation'
-              defaultValue={
-                displayLog.lineInformation.trim() != ''
-                  ? displayLog.lineInformation
-                  : '-'
-              }
-              slotProps={{
-                htmlInput: {
-                  readOnly: true,
-                  disabled: true,
-                },
-              }}
-            />
+            <DetailText input={displayLog.lineInformation} />
           )}
         </FormControl>
       </Grid>
-      <Grid size={{ sm: 6, md: 4, lg: 3 }}>
+      <Grid size={{ xs: 12, sm: 6, md: 4, lg: 3 }}>
         <FormControl fullWidth>
           <FormLabel>log 訊息</FormLabel>
           {isLoading ? (
             <Skeleton variant='text' sx={{ fontSize: '2rem' }} />
           ) : (
-            <TextField
-              variant='standard'
-              name='messages'
-              defaultValue={
-                displayLog.messages.trim() != '' ? displayLog.messages : '-'
-              }
-              multiline
-              rows={4}
-              slotProps={{
-                htmlInput: {
-                  readOnly: true,
-                  disabled: true,
-                },
-              }}
-            />
+            <DetailText input={displayLog.messages} />
           )}
         </FormControl>
       </Grid>

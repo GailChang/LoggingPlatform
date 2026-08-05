@@ -1,7 +1,7 @@
 'use client'
 import { updateFilterGroup } from '@/domain/filter/store'
 import { updateSearchId, useActiveLogStore } from '@/domain/logs/activeStore'
-import { useLogsStore } from '@/domain/logs/store'
+import { updateLoadingState, useLogsStore } from '@/domain/logs/store'
 import {
   Chip,
   CircularProgress,
@@ -69,12 +69,14 @@ export default function LogViewer({ toggleOpen }: TLogViewerProps) {
   const pageSize = useLogsStore((state) => state.pageSize)
 
   const handlePageChange = (event: unknown, newPage: number) => {
+    updateLoadingState(true)
     updateFilterGroup({ page: newPage })
   }
 
   const handleRowsPerPageChange = (
     event: React.ChangeEvent<HTMLInputElement>
   ) => {
+    updateLoadingState(true)
     updateFilterGroup({
       page: 0,
       pageSize: parseInt(event.target.value, 10),

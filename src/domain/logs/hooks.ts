@@ -1,5 +1,7 @@
+import { TIME_OPTION } from '@/components/LogSearchSection/LogSearchSection'
+import dayjs from 'dayjs'
 import useSWR from 'swr'
-import type { FilterGroup } from '../filter/schema'
+import { ETimeFilterBy, type FilterGroup } from '../filter/schema'
 import { useFilterStore } from '../filter/store'
 import { sleep } from '../shared/sleep'
 import { useActiveLogStore } from './activeStore'
@@ -38,7 +40,49 @@ const mockGetLogs = async (filters: FilterGroup): Promise<LogEntry[]> => {
     if (filters.level) {
       hasResult = hasResult && log.level == filters.level
     }
-    // TODO: stirngTime, timeFilterBy, startTime, endTime
+    if (filters.timeFilterBy == ETimeFilterBy.Relative && filters.stringTime) {
+      let startDt = dayjs()
+      const endDt = dayjs().add(1, 'minute')
+      switch (filters.stringTime) {
+        case TIME_OPTION[0].value:
+          startDt = dayjs().subtract(5, 'minute').subtract(1, 'millisecond')
+          break
+        case TIME_OPTION[1].value:
+          startDt = dayjs().subtract(10, 'minute').subtract(1, 'millisecond')
+          break
+        case TIME_OPTION[2].value:
+          startDt = dayjs().subtract(1, 'hour').subtract(1, 'millisecond')
+          break
+        case TIME_OPTION[3].value:
+          startDt = dayjs().subtract(1, 'day').subtract(1, 'millisecond')
+          break
+        case TIME_OPTION[4].value:
+          startDt = dayjs().subtract(3, 'day').subtract(1, 'millisecond')
+          break
+      }
+
+      hasResult =
+        hasResult &&
+        dayjs(log.createTime).isAfter(startDt) &&
+        dayjs(log.createTime).isBefore(endDt)
+    }
+    if (
+      filters.timeFilterBy == ETimeFilterBy.Absolute &&
+      (filters.startTime || filters.endTime)
+    ) {
+      const startDt = filters.startTime
+        ? dayjs(filters.startTime)
+        : dayjs().subtract(100, 'year')
+      const endDt = filters.endTime
+        ? dayjs(filters.endTime)
+        : dayjs().add(1, 'minute')
+
+      hasResult =
+        hasResult &&
+        dayjs(log.createTime).isAfter(startDt) &&
+        dayjs(log.createTime).isBefore(endDt)
+    }
+
     return hasResult
   })
 
@@ -46,14 +90,14 @@ const mockGetLogs = async (filters: FilterGroup): Promise<LogEntry[]> => {
   const pageNow = Math.max(0, filters.page || 0)
   const totalCount = filteredLogs.length
 
-  const startIndex = pageNow * pageSize
-  const endIndex = startIndex + pageSize
+  const startIndex = Math.min(pageNow * pageSize, totalCount - 1)
+  const endIndex = Math.min(startIndex + pageSize, totalCount - 1)
   const paginatedLogs = filteredLogs.slice(startIndex, endIndex)
 
   setPaginationState(totalCount)
   setCurrentPage(pageNow)
   setPageSize(pageSize)
-  return sleep<LogEntry[]>(2000, paginatedLogs)
+  return sleep<LogEntry[]>(1500, paginatedLogs)
 }
 
 const mockGetLog = async (id: string): Promise<LogEntry | undefined> => {

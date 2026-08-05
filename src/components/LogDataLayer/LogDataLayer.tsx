@@ -8,6 +8,7 @@ const LogDataLayer: React.FC<React.PropsWithChildren> = ({ children }) => {
   const { isLoading } = useLogs(
     (data) => {
       setLogs(data)
+      updateLoadingState(false)
     },
     (error) => console.log(error)
   )

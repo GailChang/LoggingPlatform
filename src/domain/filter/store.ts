@@ -1,5 +1,4 @@
 import { create } from 'zustand'
-import { updateLoadingState } from '../logs/store'
 import type { FilterGroup } from './schema'
 
 type FilterStore = {
@@ -35,7 +34,6 @@ export const updateFilterGroup = (updatedFields: Partial<FilterGroup>) => {
   useFilterStore.setState((prev) => ({
     filterGroup: { ...prev.filterGroup, ...updatedFields },
   }))
-  updateLoadingState(true)
 }
 
 export const resetFilterGroup = () => {

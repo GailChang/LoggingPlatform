@@ -50,7 +50,7 @@ const LEVEL_OPTION = Object.entries(ELevel).map(([key, value]) => ({
   label: key,
 }))
 
-const TIME_OPTION = [
+export const TIME_OPTION = [
   {
     value: 'fiveMinutes',
     label: '5分鐘以內',

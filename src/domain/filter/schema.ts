@@ -1,4 +1,5 @@
 import { ELevel, ELogType } from '../logs/schema'
+import { TPagination } from '../pagination/schema'
 
 export enum ETimeFilterBy {
   Relative,
@@ -15,4 +16,4 @@ export type FilterGroup = {
   endTime: string | undefined
   sourceSystem: string | undefined
   level: ELevel | undefined
-}
+} & TPagination

@@ -1,4 +1,5 @@
 'use client'
+import { updateFilterGroup } from '@/domain/filter/store'
 import { updateSearchId, useActiveLogStore } from '@/domain/logs/activeStore'
 import { useLogsStore } from '@/domain/logs/store'
 import {
@@ -7,7 +8,9 @@ import {
   Table,
   TableBody,
   TableCell,
+  TableCellProps,
   TableHead,
+  TablePagination,
   TableRow,
   Typography,
 } from '@mui/material'
@@ -15,6 +18,33 @@ import { Dispatch, SetStateAction, useMemo } from 'react'
 
 type TLogViewerProps = {
   toggleOpen: Dispatch<SetStateAction<boolean>>
+}
+
+const TableCell8em = ({ children, width, sx }: TableCellProps) => {
+  return (
+    <TableCell
+      sx={{
+        minWidth: '8em',
+        ...(sx ?? {}),
+      }}
+      width={width ?? 'auto'}
+    >
+      {children}
+    </TableCell>
+  )
+}
+const TableCell6em = ({ children, width, sx }: TableCellProps) => {
+  return (
+    <TableCell
+      sx={{
+        minWidth: '6em',
+        ...(sx ?? {}),
+      }}
+      width={width ?? 'auto'}
+    >
+      {children}
+    </TableCell>
+  )
 }
 
 export default function LogViewer({ toggleOpen }: TLogViewerProps) {
@@ -30,23 +60,65 @@ export default function LogViewer({ toggleOpen }: TLogViewerProps) {
   }, [logs])
 
   const handleRowClick = (id: string) => {
-    // setSelectedIndex(index)
-    console.log(`打開${id} Log`)
     updateSearchId(id)
-    console.log(searchId)
     toggleOpen(true)
+  }
+
+  const total = useLogsStore((state) => state.total)
+  const page = useLogsStore((state) => state.page)
+  const pageSize = useLogsStore((state) => state.pageSize)
+
+  const handlePageChange = (event: unknown, newPage: number) => {
+    updateFilterGroup({ page: newPage })
+  }
+
+  const handleRowsPerPageChange = (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    updateFilterGroup({
+      page: 0,
+      pageSize: parseInt(event.target.value, 10),
+    })
   }
 
   return (
     <>
-      <Table>
+      <Table
+        sx={{
+          marginTop: '1rem',
+          tableLayout: 'fixed',
+          '& .MuiTableCell-body, & .MuiTableCell-head': {
+            p: '.6rem',
+          },
+        }}
+      >
         <TableHead>
           <TableRow>
-            <TableCell>時間</TableCell>
-            <TableCell>等級</TableCell>
-            <TableCell>類型</TableCell>
-            <TableCell>訊息</TableCell>
-            <TableCell>來源</TableCell>
+            <TableCell6em sx={{ width: { xs: '30%', md: '20%', lg: '12%' } }}>
+              時間
+            </TableCell6em>
+            <TableCell6em
+              sx={{
+                textAlign: 'center',
+                width: { xs: '30%', md: '16%', lg: '12%' },
+              }}
+            >
+              等級
+            </TableCell6em>
+            <TableCell
+              sx={{
+                textAlign: 'center',
+                width: { xs: '30%', md: '16%', lg: '12%' },
+              }}
+            >
+              類型
+            </TableCell>
+            <TableCell sx={{ width: { xs: '30%', md: '32%', lg: '52%' } }}>
+              訊息
+            </TableCell>
+            <TableCell8em sx={{ width: { xs: '30%', md: '16%', lg: '12%' } }}>
+              來源
+            </TableCell8em>
           </TableRow>
         </TableHead>
         <TableBody>
@@ -83,8 +155,10 @@ export default function LogViewer({ toggleOpen }: TLogViewerProps) {
                     log.id == searchId ? 'action.selected' : 'transparent',
                 }}
               >
-                <TableCell>{log.createTime.toLocaleString()}</TableCell>
-                <TableCell>
+                <TableCell sx={{ p: '.5rem' }}>
+                  {log.createTime.toLocaleString()}
+                </TableCell>
+                <TableCell sx={{ textAlign: 'center' }}>
                   <Chip
                     label={log.level}
                     color={
@@ -96,16 +170,34 @@ export default function LogViewer({ toggleOpen }: TLogViewerProps) {
                     }
                   />
                 </TableCell>
-                <TableCell>
+                <TableCell sx={{ textAlign: 'center' }}>
                   <Chip variant='outlined' label={log.type} />
                 </TableCell>
-                <TableCell>{log.messages}</TableCell>
+                <TableCell
+                  sx={{
+                    overflow: 'hidden',
+                    textOverflow: 'ellipsis',
+                    whiteSpace: 'nowrap',
+                  }}
+                >
+                  {log.messages}
+                </TableCell>
                 <TableCell>{log.sourceSystem}</TableCell>
               </TableRow>
             ))
           )}
         </TableBody>
       </Table>
+      <TablePagination
+        component={'div'}
+        labelRowsPerPage='每頁顯示：'
+        count={total}
+        onPageChange={handlePageChange}
+        onRowsPerPageChange={handleRowsPerPageChange}
+        page={page}
+        rowsPerPage={pageSize}
+        rowsPerPageOptions={[5, 10, 25, 50]}
+      />
     </>
   )
 }

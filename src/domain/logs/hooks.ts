@@ -6,6 +6,7 @@ import { useActiveLogStore } from './activeStore'
 import { logApi } from './api'
 import MOCK_LOGS from './mock'
 import { ELogType, type LogEntry } from './schema'
+import { setCurrentPage, setPageSize, setPaginationState } from './store'
 
 type LogsKey = readonly ['logs', FilterGroup, boolean]
 type LogKey = readonly ['log', string, boolean]
@@ -41,8 +42,22 @@ const mockGetLogs = async (filters: FilterGroup): Promise<LogEntry[]> => {
     return hasResult
   })
 
+  const pageSize = filters.pageSize || 10
+  const pageNow = Math.max(0, filters.page || 0)
+  const totalCount = filteredLogs.length
+  console.log('pageSize:', pageSize)
+  console.log('pageNow:', pageNow)
+  console.log('totalCount:', totalCount)
+
+  const startIndex = pageNow * pageSize
+  const endIndex = startIndex + pageSize
+  const paginatedLogs = filteredLogs.slice(startIndex, endIndex)
+
+  setPaginationState(totalCount)
+  setCurrentPage(pageNow)
+  setPageSize(pageSize)
   // console.log('mockGetLogs activate')
-  return sleep<LogEntry[]>(2000, filteredLogs)
+  return sleep<LogEntry[]>(2000, paginatedLogs)
 }
 
 const mockGetLog = async (id: string): Promise<LogEntry | undefined> => {
@@ -73,12 +88,14 @@ export function useLog(
   onError?: (error: unknown) => void
 ) {
   const storeId = useActiveLogStore((state) => state.searchId)
+  const isLoading = useActiveLogStore((state) => state.isLoading)
 
   let searchId = storeId
   if (!searchId) searchId = ''
 
   const key: LogKey = ['log', searchId, useMock]
 
+  console.log('isLoading', isLoading)
   return useSWR<LogEntry | undefined, Error, LogKey>(
     key,
     ([, id]) => (useMock ? mockGetLog(id) : logApi.getLogById(id)),

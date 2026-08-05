@@ -1,4 +1,8 @@
-import { Box, Typography } from '@mui/material'
+import {
+  hasValueNumber,
+  hasValueString,
+} from '@/domain/shared/checkValueUtility'
+import { Box, Typography, TypographyProps } from '@mui/material'
 import { grey } from '@mui/material/colors'
 
 type TDetailTextProps = {
@@ -8,23 +12,14 @@ type TDetailTextProps = {
   ) => boolean | undefined
   isEmptyShowDash?: boolean
   emptyShowString?: string
-}
-
-const hasValue = (value: number | string | undefined | null) => {
-  return value !== undefined && value !== null
-}
-const hasValueString = (value: number | string | undefined | null) => {
-  return hasValue(value) && typeof value === 'string' && value.trim() !== ''
-}
-const hasValueNumber = (value: number | string | undefined | null) => {
-  return hasValue(value) && typeof value === 'number'
-}
+} & TypographyProps
 
 export default function DetailText({
   input,
   emptyDefinition = undefined,
   isEmptyShowDash = true,
   emptyShowString = '',
+  sx,
 }: TDetailTextProps) {
   let displayText = input
   const fallbackString =
@@ -54,7 +49,9 @@ export default function DetailText({
         borderBottom: `1px solid ${grey[500]}`,
       }}
     >
-      <Typography sx={{ lineBreak: 'anywhere' }}>{displayText}</Typography>
+      <Typography sx={{ lineBreak: 'anywhere', ...(sx ?? {}) }}>
+        {displayText}
+      </Typography>
     </Box>
   )
 }

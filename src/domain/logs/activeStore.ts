@@ -30,7 +30,7 @@ export const updateSearchId = (newId: string) => {
   if (newId.trim() == '') {
     return
   }
-  useActiveLogStore.setState({ searchId: newId })
+  useActiveLogStore.setState({ searchId: newId, isLoading: true })
 }
 
 export const updateActiveLoadingState = (isLoading: boolean) => {

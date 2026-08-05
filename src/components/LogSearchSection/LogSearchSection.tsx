@@ -118,6 +118,19 @@ export default function LogSearchSection({
   const [fieldsDefault, setFieldsDefault] = useState<Partial<FilterGroup>>()
 
   //#region 按鈕事件
+  /** 更新 filter store，觸發搜尋動作 */
+  const postSearch = () => {
+    if (!formRef.current) return
+
+    const formData = new FormData(formRef.current)
+    const data = Object.fromEntries(formData.entries())
+    const paginationData = {
+      page: 0,
+      ...data,
+    } as Partial<FilterGroup>
+    updateFilterGroup(paginationData)
+  }
+
   /**
    * 表單提交事件
    *
@@ -126,12 +139,7 @@ export default function LogSearchSection({
    */
   const handleSubmit = (e: React.SubmitEvent) => {
     e.preventDefault()
-    if (!formRef.current) return
-
-    const formData = new FormData(formRef.current)
-    const data = Object.fromEntries(formData.entries())
-    updateFilterGroup(data as Partial<FilterGroup>)
-    // console.log('submit data: ', data)
+    postSearch()
   }
 
   /** 表單清空欄位事件 */
@@ -164,9 +172,7 @@ export default function LogSearchSection({
     setResetKey((prev) => prev + 1)
 
     // 觸發搜尋
-    const formData = new FormData(formRef.current)
-    const data = Object.fromEntries(formData.entries())
-    updateFilterGroup(data as Partial<FilterGroup>)
+    postSearch()
   }
   //#endregion 按鈕事件
 

@@ -1,6 +1,11 @@
 import { httpClient } from '@/domain/shared/httpClient'
 import { FilterGroup } from '../filter/schema'
+import { TPagination } from '../pagination/schema'
 import { LogEntry } from './schema'
+
+export type PaginatedLogsResponse = {
+  logs: LogEntry[]
+} & TPagination
 
 export const logApi = {
   async getLogs(filters: FilterGroup): Promise<LogEntry[]> {

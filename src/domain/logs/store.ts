@@ -1,14 +1,18 @@
 import { create } from 'zustand'
+import { TPagination } from '../pagination/schema'
 import type { LogEntry } from './schema'
 
 type LogsStore = {
   logs: LogEntry[]
   isLoading: boolean
-}
+} & TPagination
 
 const initialState: LogsStore = {
   logs: [],
   isLoading: false,
+  total: 0,
+  pageSize: 10,
+  page: 1,
 }
 
 export const useLogsStore = create<LogsStore>(() => ({
@@ -32,5 +36,17 @@ export const clearLogs = () => {
 
 export const updateLoadingState = (isLoading: boolean) => {
   useLogsStore.setState({ isLoading })
+}
+
+export const setPaginationState = (totalCount: number) => {
+  useLogsStore.setState({ total: totalCount })
+}
+
+export const setCurrentPage = (page: number) => {
+  useLogsStore.setState({ page: page })
+}
+
+export const setPageSize = (size: number) => {
+  useLogsStore.setState({ pageSize: size })
 }
 // #endregion actions

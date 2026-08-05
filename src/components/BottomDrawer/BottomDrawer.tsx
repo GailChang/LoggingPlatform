@@ -1,4 +1,6 @@
 'use client'
+import { useActiveLogStore } from '@/domain/logs/activeStore'
+import { hasValueString } from '@/domain/shared/checkValueUtility'
 import { SwipeableDrawer, SwipeableDrawerProps } from '@mui/material'
 import { grey } from '@mui/material/colors'
 import { styled } from '@mui/material/styles'
@@ -39,6 +41,12 @@ export default function BottomDrawer({
   children,
   toggleOpen,
 }: TDrawerProps) {
+  const idExist = hasValueString(useActiveLogStore.getState().searchId)
+
+  if (idExist === false) {
+    return <></>
+  }
+
   return (
     <>
       <SwipeableDrawer

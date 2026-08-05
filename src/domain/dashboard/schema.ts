@@ -2,14 +2,20 @@ import { FilterGroup } from '../filter/schema'
 
 /** 時間軸圖 */
 export type TTimeline = {
-  createTime: string | undefined
-  logCount: number | undefined
+  createTime: string
+  logCount: number
+}
+
+export type TTimelineDataset = {
+  timelineArray: TTimeline[] | undefined
+  startTime: Date
+  endTime: Date
 }
 
 /** 熱點圖-單位 schema */
 export type THeatMap = {
-  hour: number | undefined
-  logCount: number | undefined
+  hour: number
+  logCount: number
 }
 
 /** 熱點圖資料集 */
@@ -25,7 +31,7 @@ export type TDuplicateError = {
   date: string | undefined
   errorCode: string | undefined
   path: string | undefined
-  filterGroup: FilterGroup
+  filterGroup: Partial<FilterGroup>
   logCount: number | undefined
 }
 

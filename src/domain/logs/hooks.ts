@@ -45,9 +45,6 @@ const mockGetLogs = async (filters: FilterGroup): Promise<LogEntry[]> => {
   const pageSize = filters.pageSize || 10
   const pageNow = Math.max(0, filters.page || 0)
   const totalCount = filteredLogs.length
-  console.log('pageSize:', pageSize)
-  console.log('pageNow:', pageNow)
-  console.log('totalCount:', totalCount)
 
   const startIndex = pageNow * pageSize
   const endIndex = startIndex + pageSize
@@ -56,7 +53,6 @@ const mockGetLogs = async (filters: FilterGroup): Promise<LogEntry[]> => {
   setPaginationState(totalCount)
   setCurrentPage(pageNow)
   setPageSize(pageSize)
-  // console.log('mockGetLogs activate')
   return sleep<LogEntry[]>(2000, paginatedLogs)
 }
 
@@ -88,14 +84,12 @@ export function useLog(
   onError?: (error: unknown) => void
 ) {
   const storeId = useActiveLogStore((state) => state.searchId)
-  const isLoading = useActiveLogStore((state) => state.isLoading)
 
   let searchId = storeId
   if (!searchId) searchId = ''
 
   const key: LogKey = ['log', searchId, useMock]
 
-  console.log('isLoading', isLoading)
   return useSWR<LogEntry | undefined, Error, LogKey>(
     key,
     ([, id]) => (useMock ? mockGetLog(id) : logApi.getLogById(id)),

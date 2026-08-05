@@ -154,7 +154,6 @@ export default function LogSearchSection({
     const formData = new FormData(formRef.current)
     const data = Object.fromEntries(formData.entries())
 
-    // console.log('data', data)
     localStorage.setItem(LOG_FILTER_KEY, JSON.stringify(data))
   }
 
@@ -164,7 +163,6 @@ export default function LogSearchSection({
     if (!saved || !formRef.current) return
 
     const filters = JSON.parse(saved) as FilterGroup
-    // console.log('filters', filters)
 
     if (!filters) return
 

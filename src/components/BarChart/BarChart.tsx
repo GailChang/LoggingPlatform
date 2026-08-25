@@ -26,7 +26,7 @@ type TBarChartOptions = {
 type TBarData = { name: string; data: number[] }
 
 export default function BarChart({ options, data }: TBarChart) {
-  const [state, setState] = useState({
+  const [state] = useState({
     series: data,
     options: {
       plotOptions: {

@@ -28,7 +28,7 @@ type THeatmapData = {
 // Seeded PRNG so the heatmap is identical on every load (stable snapshots).
 
 export default function HeatMap({ options, data }: THeatmap) {
-  const [state, setState] = React.useState({
+  const [state] = React.useState({
     series: data,
     options: {
       dataLabels: {

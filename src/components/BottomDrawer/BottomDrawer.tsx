@@ -41,7 +41,7 @@ export default function BottomDrawer({
   children,
   toggleOpen,
 }: TDrawerProps) {
-  const idExist = hasValueString(useActiveLogStore.getState().searchId)
+  const idExist = hasValueString(useActiveLogStore((state) => state.searchId))
 
   if (idExist === false) {
     return <></>

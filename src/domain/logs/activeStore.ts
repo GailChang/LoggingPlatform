@@ -23,7 +23,7 @@ export const setActiveLog = (newLog: LogEntry) => {
 }
 
 export const clearActiveLog = () => {
-  useActiveLogStore.setState({ log: null })
+  useActiveLogStore.setState({ log: null, searchId: undefined })
 }
 
 export const updateSearchId = (newId: string) => {

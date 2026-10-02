@@ -1,4 +1,5 @@
 import { create } from 'zustand'
+import { clearActiveLog } from '../logs/activeStore'
 import type { FilterGroup } from './schema'
 
 type FilterStore = {
@@ -34,6 +35,7 @@ export const updateFilterGroup = (updatedFields: Partial<FilterGroup>) => {
   useFilterStore.setState((prev) => ({
     filterGroup: { ...prev.filterGroup, ...updatedFields },
   }))
+  clearActiveLog()
 }
 
 export const resetFilterGroup = () => {

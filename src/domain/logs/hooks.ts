@@ -92,7 +92,7 @@ const mockGetLogs = async (filters: FilterGroup): Promise<LogEntry[]> => {
 
   const startIndex = Math.min(pageNow * pageSize, totalCount - 1)
   const endIndex = Math.min(startIndex + pageSize, totalCount - 1)
-  const paginatedLogs = filteredLogs.slice(startIndex, endIndex)
+  const paginatedLogs = filteredLogs.slice(startIndex, endIndex + 1)
 
   setPaginationState(totalCount)
   setCurrentPage(pageNow)

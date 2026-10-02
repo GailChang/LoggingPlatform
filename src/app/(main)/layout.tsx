@@ -3,6 +3,7 @@
 import Breadcrumb from '@/components/Breadcrumb'
 import Navbar from '@/components/Navbar'
 import Sidebar from '@/components/Sidebar'
+import { resetFilterGroup } from '@/domain/filter/store'
 import { setShared } from '@/domain/shared/store'
 import { Box, Stack, Toolbar } from '@mui/material'
 import { usePathname } from 'next/navigation'
@@ -18,6 +19,8 @@ const MainLayout: React.FC<React.PropsWithChildren> = ({ children }) => {
         ? 'home'
         : (pathname.split('/').filter(Boolean).at(-1) ?? 'home')
     setShared(segment)
+    // 重設 filterGroup，讓跳頁後的logs頁面回復初始值
+    resetFilterGroup()
   }, [pathname])
 
   const handleToggleMenu = () => {

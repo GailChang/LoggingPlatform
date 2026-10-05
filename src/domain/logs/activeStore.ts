@@ -1,3 +1,4 @@
+import { mutate } from 'swr'
 import { create } from 'zustand'
 import type { LogEntry } from './schema'
 
@@ -30,7 +31,14 @@ export const updateSearchId = (newId: string) => {
   if (newId.trim() == '') {
     return
   }
-  useActiveLogStore.setState({ searchId: newId, isLoading: true })
+
+  useActiveLogStore.setState({
+    searchId: newId,
+    isLoading: true,
+  })
+
+  const useMock = process.env.NEXT_PUBLIC_USE_MOCK === 'true'
+  mutate(['log', newId, useMock], undefined, { revalidate: true })
 }
 
 export const updateActiveLoadingState = (isLoading: boolean) => {

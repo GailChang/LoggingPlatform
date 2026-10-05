@@ -102,7 +102,7 @@ const mockGetLogs = async (filters: FilterGroup): Promise<LogEntry[]> => {
 
 const mockGetLog = async (id: string): Promise<LogEntry | undefined> => {
   const log = MOCK_LOGS.find((log) => log.id === id)
-  return sleep<LogEntry | undefined>(2000, log || undefined)
+  return sleep<LogEntry | undefined>(1000, log || undefined)
 }
 
 export function useLogs(
@@ -132,9 +132,9 @@ export function useLog(
   let searchId = storeId
   if (!searchId) searchId = ''
 
-  const key: LogKey = ['log', searchId, useMock]
+  const key: LogKey | null = searchId === '' ? null : ['log', searchId, useMock]
 
-  return useSWR<LogEntry | undefined, Error, LogKey>(
+  return useSWR<LogEntry | undefined, Error, LogKey | null>(
     key,
     ([, id]) => (useMock ? mockGetLog(id) : logApi.getLogById(id)),
     {

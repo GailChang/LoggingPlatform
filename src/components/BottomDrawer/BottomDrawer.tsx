@@ -1,7 +1,7 @@
 'use client'
 import { useActiveLogStore } from '@/domain/logs/activeStore'
 import { hasValueString } from '@/domain/shared/checkValueUtility'
-import { SwipeableDrawer, SwipeableDrawerProps } from '@mui/material'
+import { Drawer, SwipeableDrawerProps } from '@mui/material'
 import { grey } from '@mui/material/colors'
 import { styled } from '@mui/material/styles'
 import { Dispatch, SetStateAction } from 'react'
@@ -49,7 +49,50 @@ export default function BottomDrawer({
 
   return (
     <>
-      <SwipeableDrawer
+      <Drawer
+        anchor='bottom'
+        disablePortal
+        ModalProps={{
+          container: container,
+        }}
+        onClose={() => toggleOpen(false)}
+        open={open}
+        slotProps={{
+          backdrop: {
+            sx: {
+              position: 'absolute',
+            },
+          },
+          paper: {
+            sx: {
+              position: 'absolute',
+              height: '90%',
+              overflow: 'visible',
+            },
+          },
+        }}
+        sx={{
+          position: 'absolute',
+        }}
+      >
+        <StyledBox
+          sx={{
+            position: 'absolute',
+            top: -drawerBleeding,
+            borderTopLeftRadius: 8,
+            borderTopRightRadius: 8,
+            visibility: 'visible',
+            right: 0,
+            left: 0,
+            minHeight: '40px',
+            boxShadow: '0px -2px 4px rgba(0, 0, 0, 0.1)',
+          }}
+        >
+          <Puller />
+        </StyledBox>
+        {children}
+      </Drawer>
+      {/* <SwipeableDrawer
         id='swDrawer'
         anchor='bottom'
         disablePortal
@@ -100,7 +143,7 @@ export default function BottomDrawer({
           <Puller />
         </StyledBox>
         {children}
-      </SwipeableDrawer>
+      </SwipeableDrawer> */}
     </>
   )
 }
